@@ -1,0 +1,23 @@
+.clubLogo {
+  object-fit: contain;
+  border-radius: 50%;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.small {
+  width: 24px;
+  height: 24px;
+}
+
+.medium {
+  width: 32px;
+  height: 32px;
+}
+
+.large {
+  width: 48px;
+  height: 48px;
+}
