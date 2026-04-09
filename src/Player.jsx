@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import styles from "./Player.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { Radar } from "react-chartjs-2";
 import PlayerProfile from "./Components/PlayerProfile";
+import PhaseStats from "./Components/PhaseStats";
+
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -11,7 +14,6 @@ import {
   Tooltip,
   Legend
 } from "chart.js";
-import styles from "./Player.module.css";
 
 ChartJS.register(
   RadialLinearScale,
@@ -238,7 +240,6 @@ const Player = () => {
 
         if (res.ok) {
           const data = await res.json();
-          console.log("✅ Fetched player data:", data);
           setPlayer(data);
         } else {
           setError(`Failed to fetch player data (${res.status})`);
@@ -261,19 +262,8 @@ const Player = () => {
   const dribbling = player ? calculateDribbling(player) : 0;
   const defending = player ? calculateDefending(player) : 0;
 
-  useEffect(() => {
-    if (player) {
-      console.log("📊 FINAL CALCULATED STATS:", {
-        attacking,
-        creativity,
-        passing,
-        dribbling,
-        defending
-      });
-    }
-  }, [player, attacking, creativity, passing, dribbling, defending]);
 
-  // Radar chart data
+// Radar chart data
 // Each point has its own color like in the image
 const pointColors = [
   "#22c55e",  // Attacking  - cyan
@@ -376,21 +366,84 @@ const radarOptions = {
 };
 
   const attributes = [
-    { name: "Attacking", value: attacking, color: "#22c55e", icon: "⚽" },
-    { name: "Dribbling", value: dribbling, color: "#f59e0b", icon: "🔥" },
-    { name: "Creativity", value: creativity, color: "#a855f7", icon: "✨" },
-    { name: "Passing", value: passing, color: "#3b82f6", icon: "📊" },
-    { name: "Defending", value: defending, color: "#ef4444", icon: "🛡️" }
+    { name: "Attacking", value: attacking, color: "#d0cdcd" },
+    { name: "Dribbling", value: dribbling, color: "#d0cdcd" },
+    { name: "Creativity", value: creativity, color: "#d0cdcd" },
+    { name: "Passing", value: passing, color: "#d0cdcd" },
+    { name: "Defending", value: defending, color: "#d0cdcd" }
   ];
 
   const statsCards = [
-    { label: "Matches", value: safeNumber(player?.matches), icon: "🎮" },
-    { label: "Goals", value: safeNumber(player?.goals), icon: "⚽" },
-    { label: "Assists", value: safeNumber(player?.assists), icon: "🅰️" },
-    { label: "xG", value: safeNumber(player?.xg).toFixed(1), icon: "📈" },
-    { label: "xAG", value: safeNumber(player?.xag).toFixed(1), icon: "📊" },
-    { label: "Minutes", value: safeNumber(player?.minutes), icon: "⏱️" }
+    { label: "Matches", value: safeNumber(player?.matches) },
+    { label: "Goals", value: safeNumber(player?.goals) },
+    { label: "Assists", value: safeNumber(player?.assists) },
+    { label: "Yellow", value: safeNumber(player?.yellowCards) },
+    { label: "Red", value: safeNumber(player?.redCards)},
+    { label: "Minutes", value: safeNumber(player?.minutes) }
   ];
+
+  //Filtering Stats for PhaseStats component
+
+  // Attacking Stats
+  const attackingStats = player ? {
+    goals: player.goals ?? 0,
+    gA: player.gA ?? 0,
+    goalsPer90: player.goalsPer90 ?? 0,
+    xg: player.xg ?? 0,
+    xag: player.xag ?? 0,
+    npxg: player.npxg ?? 0,
+    shots: player.shots ?? 0,
+    shotsOnTarget: player.shotsOnTarget ?? 0,
+    sotPercentage: player.sotPercentage ?? 0,
+    shotsPer90: player.shotsPer90 ?? 0,
+    sotPer90: player.sotPer90 ?? 0,
+    sca: player.sca ?? 0,
+    sca90: player.sca90 ?? 0,
+    gca: player.gca ?? 0,
+    gca90: player.gca90 ?? 0,
+  } : null;
+
+  // Passing Stats
+  const passingStats = player ? {
+    assists: player.assists ?? 0,
+    assistsPer90: player.assistsPer90 ?? 0,
+    passesAttempted: player.passesAttempted ?? 0,
+    completedPasses: player.completedPasses ?? 0,
+    passComplPerce: player.passComplPerce ?? 0,
+    keyPasses: player.keyPasses ?? 0,
+    progressivePasses: player.progressivePasses ?? 0,
+    sca: player.sca ?? 0,
+    sca90: player.sca90 ?? 0,
+    gca: player.gca ?? 0,
+    gca90: player.gca90 ?? 0,
+  } : null;
+
+  // Possession & Carries
+  const possessionStats = player ? {
+    touches: player.touches ?? 0,
+    defThirdTouches: player.defThirdTouches ?? 0,
+    midThirdTouches: player.midThirdTouches ?? 0,
+    attThirdTouches: player.attThirdTouches ?? 0,
+    carries: player.carries ?? 0,
+    progressiveCarries: player.progressiveCarries ?? 0,
+    progressiveRuns: player.progressiveRuns ?? 0,
+    carryDistance: player.carryDistance ?? 0,
+    progCarryDistance: player.progCarryDistance ?? 0,
+    progCarriesPerce: player.progCarriesPerce ?? 0,
+    dribbles: player.dribbles ?? 0,
+    dribblesCompleted: player.dribblesCompleted ?? 0,
+  } : null;
+
+  // Defensive Stats
+  const defensiveStats = player ? {
+    tackles: player.tackles ?? 0,
+    tklWon: player.tklWon ?? 0,
+    tklPerce: player.tklPerce ?? 0,
+    interceptions: player.interceptions ?? 0,
+    blocks: player.blocks ?? 0,
+    clr: player.clr ?? 0,
+    aerialsWon: player.aerialsWon ?? 0,
+  } : null;
 
   if (loading) {
     return (
@@ -416,12 +469,12 @@ const radarOptions = {
     <div className={styles.container}>
 
       {/* Back Button */}
-      <button onClick={() => navigate(-1)} className={styles.backBtn}>
+      {/* <button onClick={() => navigate(-1)} className={styles.backBtn}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         Back
-      </button>
+      </button> */}
 
       {/* ===== MAIN LAYOUT ===== */}
       <div className={styles.mainLayout}>
@@ -431,6 +484,10 @@ const radarOptions = {
 
           {/* Player Profile Info Card */}
           <PlayerProfile data={player} />
+
+          <div className={styles.Branding}>
+            <h2>SCOUT IQ</h2>
+          </div>
 
           {/* Season Overview Stats */}
           <div className={styles.quickStatsPanel}>
@@ -446,8 +503,8 @@ const radarOptions = {
               ))}
             </div>
           </div>
-
         </div>
+        
 
         {/* ===== RIGHT SIDE ===== */}
         <div className={styles.rightSide}>
@@ -470,7 +527,6 @@ const radarOptions = {
             <div className={styles.attributesList}>
               {attributes.map((attr, i) => (
                 <div key={i} className={styles.barRow}>
-                  <span className={styles.attrIcon}>{attr.icon}</span>
                   <span className={styles.attrName}>{attr.name}</span>
                   <div className={styles.bar}>
                     <div
@@ -481,7 +537,7 @@ const radarOptions = {
                       }}
                     />
                   </div>
-                  <span className={styles.attrValue} style={{ color: attr.color }}>
+                  <span className={styles.attrValue} style={{ color: "#FFFFFF" }}>
                     {attr.value}
                   </span>
                 </div>
@@ -490,7 +546,20 @@ const radarOptions = {
           </div>
 
         </div>
+
+        {/* Posistion vise Stats */}
+
       </div>
+      <div className={styles.phaseStatsSection}>
+        <PhaseStats title={"Attacking"} data={attackingStats} />
+        <PhaseStats title={"Passing"} data={passingStats} />
+        <PhaseStats title={"Possession & Carries"} data={possessionStats} />
+        <PhaseStats title={"Defensive"} data={defensiveStats} />
+      </div>
+
+      <p className={styles.disclaimer}>
+        * Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
+      </p>
     </div>
   );
 };

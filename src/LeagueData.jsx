@@ -66,7 +66,6 @@ return (
       <p className={styles.subtitle}>
         {country}
 
-       
         <img className={styles.flag} src={`../public/assets/country/${country}.jpg`} alt={country} />
       </p>
 

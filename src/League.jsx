@@ -127,7 +127,7 @@ const leagues = (name) =>{
           </div>
           <h1 className={styles.title}>Top 5 Leagues</h1>
           <p className={styles.subtitle}>
-            Hover over the cards to explore league details
+            Explore the Europine football heritage
           </p>
         </header>
 

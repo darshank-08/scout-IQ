@@ -3,19 +3,21 @@ import styles from './PlayerProfile.module.css';
 
 const PlayerProfile = ({ data }) => {
   if (!data) return null;
-  // console.log(data);
 
   const formatPositions = (posString) => posString?.replace(/,/g, ', ');
 
+  const formatText = (text) =>
+  text.replace(/\b\w/g, char => char.toUpperCase());
+
   const statsList = [
-    { label: 'Name', value: data.name },
-    { label: 'Nation', value: data.nation },
-    { label: 'Age', value: data.age },
+    { label: 'Name', value: data.name? data.name : 'N/A' },
+    { label: 'Nation', value: data.nation? data.nation : 'N/A' },
+    { label: 'Age', value: data.age? data.age : 'N/A' },
     { label: 'Position', value: formatPositions(data.position) },
-    { label: 'Preferred Foot', value: data.preferredFoot },
-    { label: 'Role', value: data.role },
-    { label: 'Club', value: data.clubName },
-    { label: 'League', value: data.league },
+    { label: 'Preferred Foot', value: data.preferredFoot? data.preferredFoot : 'N/A' },
+    { label: 'Role', value: formatText(data.role) },
+    { label: 'Club', value: data.clubName? data.clubName : 'N/A' },
+    { label: 'League', value: data.league? data.league : 'N/A' },
   ];
 
   return (

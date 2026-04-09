@@ -94,6 +94,10 @@
   animation: fadeDown 1s ease;
 }
 
+.flag{
+  margin-left: 7px;
+}
+
 /* ===== Card ===== */
 .card {
   background: var(--card-bg);
