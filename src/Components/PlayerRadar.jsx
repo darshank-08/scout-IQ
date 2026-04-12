@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import styles from "./Player.module.css";
-import { useParams, useNavigate } from "react-router-dom";
+import React from 'react'
 import { Radar } from "react-chartjs-2";
-import PlayerProfile from "./Components/PlayerProfile";
-import PhaseStats from "./Components/PhaseStats";
-import PlayerRadar from './Components/PlayerRadar';
-import AttributeRating from './Components/AttibuteRating';
+import { useParams, useNavigate } from "react-router-dom";
+import styles from "./PlayerRadar.module.css";
+import { useEffect, useState } from 'react';
 
 import {
   Chart as ChartJS,
@@ -25,6 +22,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
 
 // HELPER FUNCTIONS
 const safeNumber = (value, defaultValue = 0) => {
@@ -218,13 +216,13 @@ const calculateDefending = (p) => {
   return score;
 };
 
-// MAIN COMPONENT
-const Player = () => {
-  const { id } = useParams();
+const PlayerRadar = ({id}) => {
+//   const { id } = useParams();
   const navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     const fetchPlayerData = async () => {
@@ -257,13 +255,115 @@ const Player = () => {
     fetchPlayerData();
   }, [id]);
 
-  // Calculate all stats
+
   const attacking = player ? calculateAttacking(player) : 0;
   const creativity = player ? calculateCreativity(player) : 0;
   const passing = player ? calculatePassing(player) : 0;
   const dribbling = player ? calculateDribbling(player) : 0;
   const defending = player ? calculateDefending(player) : 0;
 
+
+// Radar chart data
+// Each point has its own color like in the image
+const pointColors = [
+  "#22c55e",  // Attacking  - cyan
+  "#f59e0b",  // Dribbling  - red
+  "#a855f7",  // Creativity - orange
+  "#3b82f6",  // Passing    - blue
+  "#ef4444",  // Defending  - purple
+];
+
+const radarData = {
+  labels: [
+    `Attacking\n${attacking}`,
+    `Dribbling\n${dribbling}`,
+    `Creativity\n${creativity}`,
+    `Passing\n${passing}`,
+    `Defending\n${defending}`,
+  ],
+  datasets: [
+    {
+      label: "Player Stats",
+      data: [attacking, dribbling, creativity, passing, defending],
+
+      // Gradient-like fill from cyan to purple (matches image)
+      backgroundColor: "rgba(0, 180, 255, 0.25)",
+      borderColor: "rgba(0, 200, 255, 0.9)",
+      borderWidth: 2,
+
+      // Each point has its own color
+      pointBackgroundColor: pointColors,
+      pointBorderColor: pointColors,
+      pointBorderWidth: 0.5,
+      pointRadius: 6,
+      pointHoverRadius: 9,
+      pointHoverBackgroundColor: "#fff",
+      pointHoverBorderColor: pointColors,
+    }
+  ]
+};
+
+const radarOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    r: {
+      min: 0,
+      max: 100,
+      beginAtZero: true,
+
+      // Dark hexagonal grid lines like the image
+      grid: {
+        color: "rgba(255, 255, 255, 0.08)",
+        lineWidth: 1,
+      },
+      angleLines: {
+        color: "rgba(255, 255, 255, 0.08)",
+        lineWidth: 1,
+      },
+
+      // Label styling - name on top, value bold below (like image)
+      pointLabels: {
+        color: "#cbd5e1",
+        font: {
+          size: 13,
+          weight: "400",
+          family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        },
+        // This callback splits the label into 2 lines
+        callback: function (label) {
+          return label.split("\n");
+        },
+      },
+
+      // Hide tick numbers on the rings
+      ticks: {
+        display: false,
+        stepSize: 20,
+        backdropColor: "transparent",
+      },
+    },
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      backgroundColor: "rgba(10, 15, 30, 0.95)",
+      weight: "500",
+      titleColor: "#ffffff",
+      bodyColor: "#00c8ff",
+      borderColor: "rgba(255,255,255,0.1)",
+      borderWidth: 1,
+      padding: 14,
+      cornerRadius: 10,
+      callbacks: {
+        // Clean tooltip: "Attacking: 82 / 100"
+        label: (ctx) => `  ${ctx.label.replace("\n", " ")}: ${ctx.parsed.r} / 100`,
+      },
+    },
+  },
+};
 
   const attributes = [
     { name: "Attacking", value: attacking, color: "#d0cdcd" },
@@ -345,100 +445,11 @@ const Player = () => {
     aerialsWon: player.aerialsWon ?? 0,
   } : null;
 
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.spinner}></div>
-        <p>Loading player data...</p>
-      </div>
-    );
-  }
-
-  if (error || !player) {
-    return (
-      <div className={styles.errorContainer}>
-        <h2>⚠️ {error || "Player not found"}</h2>
-        <button onClick={() => navigate(-1)} className={styles.backBtn}>
-          ← Go Back
-        </button>
-      </div>
-    );
-  }
-
- return (
-    <div className={styles.container}>
-
-
-      {/* ===== MAIN LAYOUT ===== */}
-      <div className={styles.mainLayout}>
-
-        {/* ===== LEFT SIDE ===== */}
-        <div className={styles.leftSide}>
-
-          {/* Player Profile Info Card */}
-          <PlayerProfile data={player} />
-
-          <div className={styles.Branding}>
-            <h2>SCOUT IQ</h2>
-          </div>
-
-          {/* Season Overview Stats */}
-          <div className={styles.quickStatsPanel}>
-            <h3 className={styles.SeasonOWtitle}>
-              Season Overview
-            </h3>
-            <div className={styles.statsGrid}>
-              {statsCards.map((stat, i) => (
-                <div key={i} className={styles.statCard}>
-                  <span className={styles.statCardValue}>{stat.value}</span>
-                  <span className={styles.statCardLabel}>{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        
-
-        {/* ===== RIGHT SIDE ===== */}
-        <div className={styles.rightSide}>
-
-          {/* Radar Chart */}
-          <div className={styles.panel}>
-
-            <div className={styles.radarHeader}>
-              <h3 className={styles.panelTitle}>
-                Player Radar
-              </h3>
-
-              <button className={styles.compareBtn} onClick={() => navigate(`/compare/${id}`)}>
-                Compare
-              </button>             
-            </div>
-
-            <div className={styles.radarWrapper}>
-              <PlayerRadar id={player.id}/>
-            </div>
-          </div>
-
-
-          <AttributeRating id={player.id}/>
-        </div>
-
-        {/* Posistion vise Stats */}
-
-      </div>
-      <div className={styles.phaseStatsSection}>
-        <PhaseStats title={"Attacking"} data={attackingStats} />
-        <PhaseStats title={"Passing"} data={passingStats} />
-        <PhaseStats title={"Possession & Carries"} data={possessionStats} />
-        <PhaseStats title={"Defensive"} data={defensiveStats} />
-      </div>
-
-      <p className={styles.disclaimer}>
-        * Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
-      </p>
+  return (
+    <div className={styles.radarWrapper}>
+        <Radar data={radarData} options={radarOptions} />
     </div>
-  );
-};
+  )
+}
 
-export default Player;
+export default PlayerRadar

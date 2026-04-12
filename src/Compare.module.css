@@ -1,0 +1,192 @@
+/* GLOBAL CONTAINER */
+.container {
+  min-height: 100vh;
+  background: rgb(24, 24, 24);
+  padding: 32px;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.headerBar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 28px;
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font-family: 'Inter'; */
+  font-weight: 600;
+}
+/* Comparison Box */
+.compareGrid {
+  display: grid;
+  grid-template-columns: 45% 2% 45%;
+  padding: 28px;
+  justify-content: space-between;
+  align-items: start;
+  gap: 24px;
+}
+
+.vsDivider{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  align-self: center;
+}
+
+/* === Default Placeholder === */
+
+.playerProfile {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: rgb(24, 24, 24);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.title {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0;
+  padding-bottom: 12px; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.statsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 4px;
+  transition: background-color 0.2s ease;
+}
+
+.statRow:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+
+.statRowBorder {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.statLabel {
+  color: #8e9893;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.025em;
+}
+
+.statValue {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: right;
+  font-family: "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Radar Comparison */
+.RadarWrapper{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: rgb(24, 24, 24);
+  border-radius: 16px;
+  padding: 28px;
+  margin: 15px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.quickStatsPanel {
+  background-color: rgb(24, 24, 24);
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.panelTitle{
+  margin-bottom: 25px;
+  font-weight: 400;
+  font-family: "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 16px 10px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.statCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 200, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+
+.statCardValue {
+  font-size: 19px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+  margin-top: 5px;
+}
+
+.statCardLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 5px;
+}
+
+.NaN{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 140px;
+}
+
+.disclaimer {
+  position: relative;
+  top: 10px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.7rem;
+  line-height: 1.5;
+  padding-left: 28px;
+}

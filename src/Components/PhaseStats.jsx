@@ -3,6 +3,8 @@ import styles from './PhaseStats.module.css';
 
 const PhaseStats = ({ title, data }) => {
 
+  console.log(data)
+
   // Define stats based on title
   const getStats = () => {
     switch (title) {
