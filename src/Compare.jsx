@@ -5,6 +5,7 @@ import PlayerProfile from './Components/PlayerProfile';
 import PlayerRadar from './Components/PlayerRadar';
 import AttributeRating from './Components/AttibuteRating';
 import PhaseStats from './Components/PhaseStats';
+import RadarCompare from './Components/RadarCompare';
 
 const Compare = () => {
   const { id } = useParams();
@@ -12,7 +13,9 @@ const Compare = () => {
   const [player2, setPlayer2] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchId, setSearchId] = useState('');
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
 
   // Fetch Player 1 on mount
   useEffect(() => {
@@ -26,6 +29,7 @@ const Compare = () => {
         if (res.ok) {
           const data = await res.json();
           setPlayer1(data);
+          console.log(data)
         } else {
           setError(`Failed to fetch player data (${res.status})`);
         }
@@ -42,16 +46,37 @@ const Compare = () => {
     }
   }, [id]);
 
+
+  // ✅ Debounced search
+  useEffect(() => {
+    if (query.trim().length < 2) {
+      setResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      const res = await fetch(
+        `http://localhost:8080/api/scouting/names?query=${encodeURIComponent(query)}`
+      );
+      const data = await res.json();
+      setResults(data);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+  
+
   // Fetch Player 2 when user selects
   const handleSelectPlayer2 = async (selectedId) => {
     try {
       setError(null);
 
-      const res = await fetch(`http://localhost:8080/api/scouting/players/${sectedId}`);
+      const res = await fetch(`http://localhost:8080/api/scouting/players/${selectedId}`);
 
       if (res.ok) {
         const data = await res.json();
         setPlayer2(data);
+        console.log("Player2 :" + data)
       } else {
         setError(`Failed to fetch player 2 data (${res.status})`);
       }
@@ -60,6 +85,12 @@ const Compare = () => {
       setError("Network error");
     }
   };
+
+  
+  const nameQuery = (e) => {
+    setQuery(e.target.value);
+  };
+
 
   // Placeholder stats when player2 is not selected
   const placeholderStats = [
@@ -150,8 +181,6 @@ const Compare = () => {
     aerialsWon: player1.aerialsWon ?? 0,
   } : null;
 
-
-
   // Attacking Stats - Player 2
   const attackingStats2 = player2 ? {
     goals: player2.goals ?? 0,
@@ -213,6 +242,8 @@ const Compare = () => {
     aerialsWon: player2.aerialsWon ?? 0,
   } : null;
 
+
+
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
@@ -222,7 +253,34 @@ const Compare = () => {
       <div className={styles.headerBar}>
         <h1 className={styles.sectionTitle}>Compare Players</h1>
 
-        <input type="text" className={styles.nameInput}/>
+        <div className={styles.searchInput}>
+          <input
+            type="text"
+            className={styles.nameInput}
+            onChange={nameQuery}
+            value={query}
+            placeholder="Search player..."
+          />
+
+          {/* Results Dropdown */}
+          {query.trim().length >= 2 && results.length > 0 && (
+            <ul className={styles.dropdown}>
+              {results.map((player) => (
+                <li
+                  key={player.id}
+                  onClick={() => {
+                    handleSelectPlayer2(player.id);
+                    setQuery('');
+                    setResults([]);
+                  }}
+                >
+                  {player.name}  ·  {player.clubName}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
       </div>
 
       <div className={styles.compareGrid}>
@@ -241,31 +299,6 @@ const Compare = () => {
           ) : (
             <div className={styles.placeholder}>
 
-              {/* Search Input
-              <div className={styles.searchWrapper}>
-                <input
-                  className={styles.searchInput}
-                  type="text"
-                  placeholder="Enter Player ID..."
-                  value={searchId}
-                  onChange={(e) => setSearchId(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && searchId.trim()) {
-                      handleSelectPlayer2(searchId.trim());
-                    }
-                  }}
-                />
-                <button
-                  className={styles.searchButton}
-                  onClick={() => {
-                    if (searchId.trim()) {
-                      handleSelectPlayer2(searchId.trim());
-                    }
-                  }}
-                >
-                  Search
-                </button>
-              </div> */}
 
               {/* Placeholder Stats */}
               <div className={styles.playerProfile}>
@@ -289,12 +322,29 @@ const Compare = () => {
         </div>
 
       </div>
-
+      
       <div className={styles.RadarWrapper}>
-        <h3 style={{fontFamily:"-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
-        fontWeight: 400
-        }}>{player1.name ? player1.name : "NaN"} vs </h3>
-        <PlayerRadar id={id}/>
+        {player2 ? (
+          <>
+            <h3 className={styles.radarTitle}>
+              <span className={styles.p1Dot} />
+              {player1?.name ?? "N/A"} <span className={styles.vsText}>vs</span>
+              <span className={styles.p2Dot} />
+              {player2?.name ?? "N/A"}
+            </h3>
+
+            <RadarCompare player1={player1} player2={player2} />
+          </>
+        ) : (
+          <>
+            <h3 className={styles.radarTitle}>
+              {player1?.name ?? "N/A"} <span className={styles.vsText}>vs</span>
+              {"N/A"}
+            </h3>
+
+            {player1?.id ? <PlayerRadar id={player1.id} /> : <div className={styles.NaN}>N/A</div>}
+          </>
+        )}
       </div>
 
       <div className={styles.compareGrid}>
@@ -318,7 +368,7 @@ const Compare = () => {
 
           <div className={styles.quickStatsPanel}>
             <h3 className={styles.panelTitle}>
-              {"NaN"}
+              {player2 ? player2.name : "N/A"}
             </h3>
             <div className={styles.statsGrid}>
               {statsCards2.map((stat, i) => (

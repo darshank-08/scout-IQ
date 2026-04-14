@@ -1,15 +1,13 @@
 import styles from "./League.module.css";
 import { useNavigate } from "react-router-dom";
     
-
-
 const leagueData = [
   {
     id: 1,
     name: "Premier League",
     short: "PL",
     country: "England",
-    champion: "Manchester City",
+    champion: "Liverpool",
     rank: "#1",
     logo: `./assets/leagues/PL.jpg`,
     color: "linear-gradient(135deg, #3d195b, #7c3aed)",
@@ -20,7 +18,7 @@ const leagueData = [
     name: "La Liga",
     short: "LL",
     country: "Spain",
-    champion: "Real Madrid",
+    champion: "FC Barcelona",
     rank: "#2",
     logo: "./assets/leagues/LaLiga.jpg",
     color: "linear-gradient(135deg, #ff5a36, #ea580c)",
@@ -42,7 +40,7 @@ const leagueData = [
     name: "Serie A",
     short: "SA",
     country: "Italy",
-    champion: "Inter Milan",
+    champion: "Napoli",
     rank: "#4",
     logo: "./assets/leagues/Serie_A.jpg",
     color: "linear-gradient(135deg, #1e3a5f, #0ea5e9)",
@@ -127,7 +125,7 @@ const leagues = (name) =>{
           </div>
           <h1 className={styles.title}>Top 5 Leagues</h1>
           <p className={styles.subtitle}>
-            Explore the Europine football heritage
+            Explore the European football heritage
           </p>
         </header>
 

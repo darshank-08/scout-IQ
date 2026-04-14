@@ -1,6 +1,6 @@
 import React from 'react'
 import { Radar } from "react-chartjs-2";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./PlayerRadar.module.css";
 import { useEffect, useState } from 'react';
 
@@ -217,23 +217,22 @@ const calculateDefending = (p) => {
 };
 
 const PlayerRadar = ({id}) => {
-//   const { id } = useParams();
   const navigate = useNavigate();
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
 
+  // console.log(id)
+
   useEffect(() => {
     const fetchPlayerData = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem("token");
         
         const res = await fetch(`http://localhost:8080/api/scouting/players/${id}`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
           }
         });

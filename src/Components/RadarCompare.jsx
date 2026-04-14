@@ -1,6 +1,22 @@
 import React from 'react'
-import styles from "./AttributeRating.module.css"
-import { useState, useEffect } from 'react';
+import styles from "./RadarCompare.module.css"
+import { Radar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+} from "chart.js";
+
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip
+);
 
 // HELPER FUNCTIONS
 const safeNumber = (value, defaultValue = 0) => {
@@ -27,7 +43,6 @@ const getNineties = (p) => {
   return safeNumber(p.minutes, 0) / 90;
 };
 
-// ATTACKING
 const calculateAttacking = (p) => {
   if (!p) return 0;
   const n = getNineties(p);
@@ -60,7 +75,6 @@ const calculateAttacking = (p) => {
   ));
 };
 
-// CREATIVITY
 const calculateCreativity = (p) => {
   if (!p) return 0;
   const n = getNineties(p);
@@ -90,7 +104,6 @@ const calculateCreativity = (p) => {
   ));
 };
 
-// PASSING
 const calculatePassing = (p) => {
   if (!p) return 0;
   const n = getNineties(p);
@@ -114,7 +127,6 @@ const calculatePassing = (p) => {
   ));
 };
 
-// DRIBBLING
 const calculateDribbling = (p) => {
   if (!p) return 0;
   const n = getNineties(p);
@@ -141,7 +153,6 @@ const calculateDribbling = (p) => {
   ));
 };
 
-// DEFENDING
 const calculateDefending = (p) => {
   if (!p) return 0;
   const n = getNineties(p);
@@ -172,81 +183,120 @@ const calculateDefending = (p) => {
     tackleSuccess * 0.10 +
     defThirdTouches * 0.10
   ));
+
 };
-s
-const AttributeRating = ({ id }) => {
 
-  const [player, setPlayer] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const RadarCompare = ({ player1, player2 }) => {
 
-  useEffect(() => {
-    const fetchPlayer = async () => {
-      try {
-        setLoading(true);
-        setError(null);
 
-        const res = await fetch(`http://localhost:8080/api/scouting/players/${id}`);
+  // Calculate stats for Player 1
+  const attacking1  = player1 ? calculateAttacking(player1)  : 0;
+  const creativity1 = player1 ? calculateCreativity(player1) : 0;
+  const passing1    = player1 ? calculatePassing(player1)    : 0;
+  const dribbling1  = player1 ? calculateDribbling(player1)  : 0;
+  const defending1  = player1 ? calculateDefending(player1)  : 0;
 
-        if (res.ok) {
-          const data = await res.json();
-          setPlayer(data);
-        } else {
-          setError(`Failed to fetch player (${res.status})`);
-        }
-      } catch (err) {
-        console.error("Network error:", err);
-        setError("Network error");
-      } finally {
-        setLoading(false);
+  // Calculate stats for Player 2
+  const attacking2  = player2 ? calculateAttacking(player2)  : 0;
+  const creativity2 = player2 ? calculateCreativity(player2) : 0;
+  const passing2    = player2 ? calculatePassing(player2)    : 0;
+  const dribbling2  = player2 ? calculateDribbling(player2)  : 0;
+  const defending2  = player2 ? calculateDefending(player2)  : 0;
+
+
+  const radarData = {
+    labels: [
+    `ATT\n${attacking1}` + " /" + `\n${attacking2}`,
+    `DRI\n${dribbling1}` + " /" + `\n${dribbling2}`,
+    `CRE\n${creativity1}` + " /" + `\n${creativity2}`,
+    `PAS\n${passing1}` + " /" + `\n${passing2}`,
+    `DEF\n${defending1}` + " /" + `\n${defending2}`,
+    ],
+    datasets: [
+      // Player 1 Dataset - Blue
+      {
+        data: [attacking1, dribbling1, creativity1, passing1, defending1],
+        
+        // Gradient-like fill from cyan to purple (matches image)
+        backgroundColor: "rgba(0, 180, 255, 0.25)",
+        borderColor: "rgba(0, 200, 255, 0.9)",
+        borderWidth: 1.5,
+
+        pointBackgroundColor: "rgba(0, 200, 255, 0.9)",
+        pointBorderColor: "rgba(0, 200, 255, 0.9)",
+        pointBorderWidth: 0.3,
+        pointRadius: 4,
+        pointHoverRadius: 9,
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(0, 200, 255, 0.9)",
+      },
+      // Player 2 Dataset - Red
+      {
+        data: [attacking2, dribbling2, creativity2, passing2, defending2],
+        backgroundColor: "rgba(239, 68, 68, 0.15)",
+        borderColor: "rgba(239, 68, 68, 0.9)",
+        borderWidth: 1.5,
+        pointBackgroundColor: "rgba(239, 68, 68, 0.9)",
+        pointBorderColor: "rgba(239, 68, 68, 0.9)",
+        pointBorderWidth: 0.3,
+        pointRadius: 4,
+        pointHoverRadius: 9,
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(239, 68, 68, 0.9)",
       }
-    };
+    ]
+  };
 
-    if (id) fetchPlayer();
-  }, [id]);
-
-  // Calculate all stats
-  const attacking = player ? calculateAttacking(player) : 0;
-  const creativity = player ? calculateCreativity(player) : 0;
-  const passing = player ? calculatePassing(player) : 0;
-  const dribbling = player ? calculateDribbling(player) : 0;
-  const defending = player ? calculateDefending(player) : 0;
-
-  const attributes = [
-    { name: "Attacking", value: attacking, color: "#d0cdcd" },
-    { name: "Dribbling", value: dribbling, color: "#d0cdcd" },
-    { name: "Creativity", value: creativity, color: "#d0cdcd" },
-    { name: "Passing", value: passing, color: "#d0cdcd" },
-    { name: "Defending", value: defending, color: "#d0cdcd" },
-  ];
-
-  if (loading) return <div className={styles.loading}>Loading...</div>;
-  if (error) return <div className={styles.error}>{error}</div>;
+  const radarOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      r: {
+        min: 0,
+        max: 100,
+        beginAtZero: true,
+        grid: {
+          color: "rgba(255, 255, 255, 0.08)",
+          lineWidth: 1,
+        },
+        angleLines: {
+          color: "rgba(255, 255, 255, 0.08)",
+          lineWidth: 1,
+        },
+        pointLabels: {
+          color: "#cbd5e1",
+          font: {
+            size: 13,
+            weight: "400",
+            family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          },
+        },
+        ticks: {
+          display: false,
+          stepSize: 20,
+          backdropColor: "transparent",
+        },
+      },
+    },
+    plugins: {
+        legend: { display: false },
+      tooltip: {
+        backgroundColor: "rgba(10, 15, 30, 0.95)",
+        titleColor: "#ffffff",
+        bodyColor: "#00c8ff",
+        borderColor: "rgba(255,255,255,0.1)",
+        borderWidth: 1,
+        padding: 14,
+        cornerRadius: 10,
+      },
+    },
+  };
 
   return (
-    <div className={styles.panel}>
-      <h3 className={styles.panelTitle}>Attribute Ratings</h3>
-      <div className={styles.attributesList}>
-        {attributes.map((attr, i) => (
-          <div key={i} className={styles.barRow}>
-            <span className={styles.attrName}>{attr.name}</span>
-            <div className={styles.bar}>
-              <div
-                className={styles.fill}
-                style={{
-                  width: `${attr.value}%`,
-                  background: `linear-gradient(90deg, ${attr.color}DD, ${attr.color})`
-                }}
-              />
-            </div>
-            <span className={styles.attrValue} style={{ color: "#FFFFFF" }}>
-              {attr.value}
-            </span>
-          </div>
-        ))}
-      </div>
+    <div className={styles.chartContainer}>
+      <Radar data={radarData} options={radarOptions} />
     </div>
   );
 };
 
-export default AttributeRating;
+export default RadarCompare;
