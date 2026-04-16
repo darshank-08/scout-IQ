@@ -173,7 +173,7 @@ const calculateDefending = (p) => {
     defThirdTouches * 0.10
   ));
 };
-s
+
 const AttributeRating = ({ id }) => {
 
   const [player, setPlayer] = useState(null);
