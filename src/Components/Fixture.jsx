@@ -37,6 +37,8 @@ export const Fixture = ({ name }) => {
         fetchFixtures();
     }, [name, clubCode]);
 
+    console.log("Fixtures:", fixtures); // Debugging log
+
     return (
         <div className={styles["table-wrapper"]}>
             {fixtures.map((fix) => (   // ✅ fixtures not Fixture

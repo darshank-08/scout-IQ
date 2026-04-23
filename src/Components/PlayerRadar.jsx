@@ -74,7 +74,7 @@ const calculateAttacking = (p) => {
 
 
   const score = Math.min(100, Math.round(
-    goalThreat * 0.30 +        
+    goalThreat * 0.33 +        
     xgImpact * 0.25 +
     npxgImpact * 0.15 +
     shootingVolume * 0.15 +

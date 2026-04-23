@@ -12,6 +12,7 @@ const LeagueData = () => {
   const { name } = useParams();
   const [players, setPlayers] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("players");
+  const [query, setQuery] = useState('');
 
   switch (name) {
     case "Premier League":
@@ -67,18 +68,42 @@ useEffect(() => {
   playersData();}
 , [name]);
 
+  const nameQuery = (e) => {
+    setQuery(e.target.value);
+  };
+
 
 return (
   <div className={styles.dashboard}>
     <div className={styles["dashboard-container"]}>
 
-      <h1 className={styles.title}>{name}</h1>
-      <p className={styles.subtitle}>
-        {country}
-        <img className={styles.flag} src={`../public/assets/country/${country}.jpg`} alt={country} />
-      </p>
+      <div className={styles.header}>
+        <div className={styles.content}>
+          <h1 className={styles.title}>{name}</h1>
+          <p className={styles.subtitle}>
+            {country}
+            <img className={styles.flag} src={`../public/assets/country/${country}.jpg`} alt={country} />
+          </p>
 
-      <p className={styles.dates}>{start ?? "N/A"} - {end ?? "N/A"}</p>
+          <p className={styles.dates}>{start ?? "N/A"} - {end ?? "N/A"}</p>
+        </div>
+
+
+        {selectedFilter === 'players' ? 
+         <div className="search-area">
+          
+          <input
+            type="text"
+            className={styles.nameInput}
+            onChange={nameQuery}
+            value={query}
+            placeholder="Search player..."
+          />
+        </div>       
+        : ""}
+
+
+      </div>
 
       <div className={styles.filterRow}>
         <label
@@ -141,7 +166,7 @@ return (
         </div>
 
         {selectedFilter === 'table' ? <Table name={name}/> :
-         selectedFilter === 'players' ? <LeaguePlayers name={name}/>:
+         selectedFilter === 'players' ? <LeaguePlayers name={name} query={query} players={players}/>:
          selectedFilter === 'fixtures' ? <Fixture name={name}/>: 'table'}
 
       </div>

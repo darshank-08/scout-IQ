@@ -52,6 +52,26 @@
   z-index: 1;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nameInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: #ffffff;
+}
+
 /*  Header  */
 .title {
   font-size: clamp(32px, 8vw, 64px);

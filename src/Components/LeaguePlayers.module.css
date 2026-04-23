@@ -61,6 +61,7 @@
   background: var(--hover-bg);
   transform: translateX(4px);
   box-shadow: -4px 0 0 var(--accent-cyan) inset;
+  background: #08080881;
 }
 
 .table tbody tr:last-child td {

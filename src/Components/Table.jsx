@@ -40,6 +40,8 @@ const Table = ({ name }) => {
         standings();
     }, [name, clubCode]);
 
+    // console.log("Table Data:", table); // Debugging log
+
 
     return (
         <div className={styles.tableWrapper}>
