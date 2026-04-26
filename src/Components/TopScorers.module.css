@@ -1,0 +1,20 @@
+.card{
+  position: relative;
+  aspect-ratio: 3 / 4;
+  width: 98.5%;
+  height: 300px;
+  border-radius: 18px;
+  background: #08080881;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  cursor: pointer;
+  animation: cardEntry 0.6s ease backwards;
+  animation-delay: var(--delay);
+}
+
+.title{
+    font-size: 18px;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 15px;
+}

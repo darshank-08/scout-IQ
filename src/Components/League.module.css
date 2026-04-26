@@ -1,0 +1,354 @@
+
+.sectionTitle {
+  font-size: clamp(1.25rem, 3vw, 1.2rem);
+  font-family: "apple-system", "Segoe UI", system-ui, sans-serif;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(0.875rem, 1.5vw, 1.25rem);
+}
+
+.card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 18px;
+  background: #08080881;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  cursor: pointer;
+  animation: cardEntry 0.6s ease backwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes cardEntry {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--card-color);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 80px var(--card-bg);
+}
+
+.card:hover::before {
+  opacity: 0.2;
+}
+.rankBadge {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  width: 40px;
+  height: 40px;
+  background: var(--card-color);
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: white;
+  z-index: 20;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.logoSection {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .logoSection {
+  opacity: 0;
+  transform: scale(0.85) translateY(-20px);
+  pointer-events: none;
+}
+
+.logoWrapper {
+  width: clamp(90px, 38%, 130px);
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.leagueName {
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  padding: 0 0.5rem;
+}
+
+.countryTag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 0.875rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.card:hover .overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlayInner {
+  width: 100%;
+}
+
+.overlayLogo {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.35rem;
+  margin-bottom: 0.75rem;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.overlayLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+.overlayTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.875rem;
+  line-height: 1.2;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-bottom: 0.875rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.statLabel {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+.champion {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+  padding: 0.75rem 0.875rem;
+  margin-bottom: 0.875rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.championLabel {
+  display: block;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.championName {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: white;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--card-color);
+  border: none;
+  border-radius: 11px;
+  color: white;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  filter: brightness(1.1);
+}
+
+.btn svg {
+  transition: transform 0.25s ease;
+}
+
+.btn:hover svg {
+  transform: translateX(4px);
+}
+
+.disabled{
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.grid2{
+  display: grid;
+  grid-template-columns:50% 50%;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(0.875rem, 1.5vw, 0.4rem);
+  padding: 0px 0.3rem;
+}
+
+.grid3{
+  display: grid;
+  grid-template-rows: repeat(auto-fit);
+  gap: clamp(0.875rem, 1.5vw, 0.4rem);
+  padding: 0px 0.3rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.875rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .card {
+    aspect-ratio: 2.8 / 4;
+    border-radius: 16px;
+  }
+
+  .rankBadge {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .overlay {
+    padding: 0.875rem;
+  }
+
+  .overlayTitle {
+    font-size: 1.1rem;
+  }
+
+  .champion {
+    padding: 0.7rem 0.875rem;
+  }
+
+  .btn {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .card {
+    aspect-ratio: 1 / 1.1;
+  }
+}

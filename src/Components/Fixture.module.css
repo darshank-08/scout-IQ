@@ -4,7 +4,19 @@
   grid-template-columns: repeat(2, 1fr); /* 2 cols on desktop */
   gap: 15px;
   padding: 20px 0;
-  overflow-x: auto;
+  border-radius: 12px;
+  
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(24, 24, 24);
+}
+
+.mini-table-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cols */
+  gap: 15px;
+  padding: 20px 0;
+
   border-radius: 12px;
   
   /* Custom scrollbar */
@@ -45,6 +57,12 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+.leagueName{
+    font-size: 16px;
+    font-weight: 300;
+    color: #ffffff;
+    height: fit-content;
+}
 .matchday {
     font-size: 12px;
     color: #cfcfcf;

@@ -1,10 +1,10 @@
-import React from 'react'
-import styles from "./Fixture.module.css"
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import styles from "./Fixture.module.css";
 
-export const Fixture = ({ name }) => {
+export const Fixture = ({ name, title }) => {
 
-    const [fixtures, setFixtures] = useState([])
+    const [fixtures, setFixtures] = useState([]);
+    // console.log(title);
 
     const getLeagueCode = (name) => {
         switch (name) {
@@ -15,7 +15,7 @@ export const Fixture = ({ name }) => {
             case "Ligue 1": return "FL1";
             default: return "";
         }
-    }
+    };
 
     const clubCode = getLeagueCode(name);
 
@@ -23,9 +23,10 @@ export const Fixture = ({ name }) => {
         const fetchFixtures = async () => {
             if (!clubCode) return;
 
-            const res = await fetch(`http://localhost:8080/api/football/fixtures/${clubCode}`, {
-                method: "GET",
-            });
+            const res = await fetch(
+                `http://localhost:8080/api/football/fixtures/${clubCode}`,
+                { method: "GET" }
+            );
 
             if (res.ok) {
                 const data = await res.json();
@@ -33,53 +34,68 @@ export const Fixture = ({ name }) => {
             } else {
                 console.error("Failed to fetch fixtures data");
             }
-        }
+        };
+
         fetchFixtures();
     }, [name, clubCode]);
 
-    console.log("Fixtures:", fixtures); // Debugging log
-
     return (
-        <div className={styles["table-wrapper"]}>
-            {fixtures.map((fix) => (   // ✅ fixtures not Fixture
-                <div key={fix.id} className={styles.matchCard}>
-                    
-                    <div className={styles.matchday}>
-                        Matchday {fix.matchday}
-                    </div>
+        <>
+            <h3 className={styles.leagueName}>{name}</h3>
 
-                    <div className={styles.teams}>
-                        {/* Home Team */}
-                        <div className={styles.team}>
-                            <img src={fix.homeTeam.crest} alt={fix.homeTeam.shortName} />
-                            <span>{fix.homeTeam.shortName}</span>
+            <div
+                className={
+                    title === "home"
+                        ? styles["mini-table-wrapper"]
+                        : styles["table-wrapper"]
+                }
+            >
+                {(title === "home"
+                    ? fixtures.slice(0, 4)
+                    : fixtures
+                ).map((fix) => (
+                    <div key={fix.id} className={styles.matchCard}>
+
+                        <div className={styles.matchday}>
+                            Matchday {fix.matchday}
                         </div>
 
-                        {/* VS */}
-                        <div className={styles.vs}>VS</div>
+                        <div className={styles.teams}>
+                            <div className={styles.team}>
+                                <img
+                                    src={fix.homeTeam.crest}
+                                    alt={fix.homeTeam.shortName}
+                                />
+                                <span>{fix.homeTeam.shortName}</span>
+                            </div>
 
-                        {/* Away Team */}
-                        <div className={styles.team}>
-                            <img src={fix.awayTeam.crest} alt={fix.awayTeam.shortName} />
-                            <span>{fix.awayTeam.shortName}</span>
+                            <div className={styles.vs}>VS</div>
+
+                            <div className={styles.team}>
+                                <img
+                                    src={fix.awayTeam.crest}
+                                    alt={fix.awayTeam.shortName}
+                                />
+                                <span>{fix.awayTeam.shortName}</span>
+                            </div>
                         </div>
+
+                        <div className={styles.date}>
+                            {new Date(fix.date).toLocaleString("en-IN", {
+                                timeZone: "Asia/Kolkata",
+                                weekday: "short",
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            })}
+                        </div>
+
                     </div>
+                ))}
+            </div>
+        </>
+    );
+};
 
-                    <div className={styles.date}>
-                        {new Date(fix.date).toLocaleString("en-IN", {
-                            timeZone: "Asia/Kolkata",
-                            weekday: "short",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        })}
-                    </div>
-
-                </div>
-            ))}
-        </div>
-    )
-}
-
-export default Fixture
+export default Fixture;

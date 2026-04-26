@@ -1,0 +1,168 @@
+
+/* ===== Header ===== */
+.header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.navigation {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.navInner {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0.75rem;
+  background: rgba(44, 69, 121, 0.829);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 2px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Logo */
+.navLogo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.25rem;
+}
+
+.logoText {
+  font-size: 1.2rem;
+  font-weight: 800;
+  background: #ffffff;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Divider */
+.navDivider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Nav List */
+.navList {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pages{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Nav Button */
+.navBtn {
+  width: fit-content;
+  position: relative;  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 1rem; */
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.icon {
+  display: block;
+  transition: 0.3s;
+}
+
+.label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 15px;
+  opacity: 0;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.navBtn:hover .icon {
+  display: none;   
+  border: none;
+  background-color: transparent;
+}
+
+.navBtn:hover .label {
+  opacity: 1;
+}
+
+.CNTSvg {
+  width: 25px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.PL{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.navBtn:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.navBtn.active {
+  color: white;
+}
+
+.navBtn.active .navSvg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+
+.searchBtn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.searchBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.searchBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  transform: scale(1.05);
+}

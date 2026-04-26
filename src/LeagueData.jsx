@@ -167,7 +167,7 @@ return (
 
         {selectedFilter === 'table' ? <Table name={name}/> :
          selectedFilter === 'players' ? <LeaguePlayers name={name} query={query} players={players}/>:
-         selectedFilter === 'fixtures' ? <Fixture name={name}/>: 'table'}
+         selectedFilter === 'fixtures' ? <Fixture name={name} title={"league"}/>: 'table'}
 
       </div>
 
