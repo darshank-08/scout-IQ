@@ -1,6 +1,5 @@
-
-/* ===== Header ===== */
 .header {
+  display: flex;
   text-align: center;
   margin-bottom: clamp(2rem, 5vw, 4rem);
 }
@@ -8,9 +7,8 @@
 .navigation {
   width: 100%;
   position: fixed;
-  top: 0px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
   z-index: 1000;
 }
 
@@ -19,129 +17,82 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.8rem 0.75rem;
-  background: rgba(44, 69, 121, 0.829);
+  padding: 0 1.5rem;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: rgba(44, 69, 121, 0.85);
   backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 2px 0 rgba(255, 255, 255, 0.05) inset;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* Logo */
 .navLogo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
   font-size: 1.25rem;
 }
 
 .logoText {
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 600;
   background: #ffffff;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Divider */
-.navDivider {
-  width: 1px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* Nav List */
-.navList {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.pages{
+.pages {
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: space-around;
-  gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  justify-content: space-evenly;
+  gap: 1rem;
 }
 
-/* Nav Button */
 .navBtn {
-  width: fit-content;
-  position: relative;  
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 1rem; */
   background: transparent;
   border: none;
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .icon {
   display: block;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .label {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 15px;
+  font-size: 0.85rem;
+  padding: 2px 6px;
   opacity: 0;
-  transition: 0.3s;
+  transition: 0.3s ease;
   white-space: nowrap;
 }
 
 .navBtn:hover .icon {
-  display: none;   
-  border: none;
-  background-color: transparent;
+  display: none;
 }
 
 .navBtn:hover .label {
   opacity: 1;
 }
 
-.CNTSvg {
-  width: 25px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.PL{
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
 .navBtn:hover {
   color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.08);
 }
 
 .navBtn.active {
-  color: white;
+  color: #ffffff;
 }
-
-.navBtn.active .navSvg {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
 
 .searchBtn {
   display: grid;
@@ -153,7 +104,7 @@
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .searchBtn svg {
@@ -166,3 +117,75 @@
   color: white;
   transform: scale(1.05);
 }
+
+@media (max-width: 1280px) {
+  .navInner {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navBtn {
+    font-size: 1.1rem;
+  }
+
+  .pages {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navInner {
+    height: 70px;
+  }
+
+  .logoText {
+    font-size: 1rem;
+  }
+
+  .navBtn {
+    font-size: 1rem;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .navBtn:hover .icon {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .navigation {
+    top: auto;
+    bottom: 0;
+  }
+
+  .navInner {
+    height: 60px;
+    justify-content: space-around;
+  }
+
+  .pages {
+    justify-content: space-around;
+  }
+
+  .label {
+    display: none;
+  }
+}
+/* 
+@media (max-width: 425px) {
+  .navInner {
+    height: 65px;
+  }
+
+  .logoText {
+    font-size: 0.9rem;
+  }
+
+  .navBtn {
+    font-size: 0.85rem;
+  }
+} */

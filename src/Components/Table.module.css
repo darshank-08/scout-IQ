@@ -1,15 +1,15 @@
-/* ===== Table ===== */
 .table-wrapper {
+  width: 100%;
+  max-height: 600px;
   overflow-x: auto;
+  overflow-y: auto;
   border-radius: 12px;
-  
-  /* Custom scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: rgba(24, 24, 24);
-  /* background-image: url(""); */
+  scrollbar-color: rgba(71, 223, 255, 0.4) rgba(255,255,255,0.05);
 }
 
 .table-wrapper::-webkit-scrollbar {
+  width: 8px;
   height: 8px;
 }
 
@@ -30,14 +30,14 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px; /* Prevents squishing on mobile */
+  min-width: 700px;
 }
 
 .table th {
   text-align: left;
   padding: 14px;
   color: #c8d1dfa7;
-  font-size: clamp(11px, 1.8vw, 13px);
+  font-size: clamp(11px, 1.2vw, 13px);
   font-weight: 400;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -50,12 +50,14 @@
   padding: 16px 14px;
   border-bottom: 1px solid var(--border-color-light);
   color: var(--text-secondary);
-  font-size: clamp(13px, 2vw, 15px);
+  font-size: clamp(12px, 1.3vw, 15px);
+  white-space: nowrap;
 }
 
 .table tbody tr {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  animation: slideIn 0.4s ease backwards;
 }
 
 .table tbody tr:hover {
@@ -68,7 +70,6 @@
   border-bottom: none;
 }
 
-/* ===== Table Elements ===== */
 .club-cell {
   display: flex;
   align-items: center;
@@ -76,16 +77,16 @@
 }
 
 .clubName {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: 500;
 }
 
 .crest {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .name {
@@ -93,7 +94,7 @@
   color: var(--text-primary);
 }
 
-.link{
+.link {
   text-decoration: none;
   color: ivory;
 }
@@ -111,17 +112,9 @@
   font-size: 1.1em;
 }
 
-.rating-high {
-  color: #4ade80;
-}
-
-.rating-medium {
-  color: var(--accent-cyan-light); 
-}
-
-.rating-low {
-  color: #fbbf24; 
-}
+.rating-high { color: #4ade80; }
+.rating-medium { color: var(--accent-cyan-light); }
+.rating-low { color: #fbbf24; }
 
 .nationality {
   display: flex;
@@ -137,12 +130,11 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/*  Badge  */
 .badge {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 0.85em;
+  font-size: 0.8em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -172,29 +164,6 @@
   border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
-/*  Animations */
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -204,10 +173,6 @@
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-.table tbody tr {
-  animation: slideIn 0.4s ease backwards;
 }
 
 .table tbody tr:nth-child(1) { animation-delay: 0.05s; }
@@ -220,3 +185,80 @@
 .table tbody tr:nth-child(8) { animation-delay: 0.4s; }
 .table tbody tr:nth-child(9) { animation-delay: 0.45s; }
 .table tbody tr:nth-child(10) { animation-delay: 0.5s; }
+
+@media (max-width: 1280px) {
+  .table {
+    min-width: 650px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .table {
+    min-width: 600px;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    min-width: 550px;
+  }
+
+  .crest {
+    width: 20px;
+    height: 20px;
+  }
+
+  .flag {
+    width: 20px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .table {
+    min-width: 500px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .badge {
+    font-size: 0.7em;
+    padding: 3px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .teamText {
+    display: none;
+  }
+
+  .clubName {
+    justify-content: center;
+    gap: 0;
+  }
+
+  .crest {
+    width: 25px;
+    height: 25px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 10px;
+    padding: 8px;
+  }
+}

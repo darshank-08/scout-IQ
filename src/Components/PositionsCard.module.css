@@ -1,6 +1,7 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: clamp(0.875rem, 1.5vw, 1.25rem);
 }
 
@@ -14,7 +15,6 @@
   animation-delay: var(--delay);
 }
 
-
 @keyframes cardEntry {
   from {
     opacity: 0;
@@ -26,7 +26,6 @@
   }
 }
 
-/* Image wrapper full size */
 .imageWrapper {
   width: 100%;
   height: 100%;
@@ -39,7 +38,6 @@
   transition: transform 0.4s ease;
 }
 
-/*  Overlay Action Section */
 .action {
   position: absolute;
   bottom: 0;
@@ -52,12 +50,10 @@
     rgba(0, 0, 0, 0.4),
     transparent
   );
-
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  transform: translateY(100%);   
+  transform: translateY(100%);
   opacity: 0;
   transition: all 0.4s ease;
 }
@@ -79,7 +75,6 @@
   color: black;
 }
 
-
 .card:hover .action {
   transform: translateY(0);
   opacity: 1;
@@ -87,4 +82,69 @@
 
 .card:hover img {
   transform: scale(1.05);
+}
+
+@media (max-width: 1280px) {
+  .grid {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
+
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+
+  .card {
+    border-radius: 16px;
+  }
+
+  .action {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .card {
+    aspect-ratio: 2.8 / 4;
+  }
+
+  .action {
+    padding: 0.875rem;
+    gap: 8px;
+  }
+
+  .action h3 {
+    font-size: 1.1rem;
+  }
+
+  .action button {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 425px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+  }
+
+  .card {
+    aspect-ratio: 1 / 1.1;
+  }
 }

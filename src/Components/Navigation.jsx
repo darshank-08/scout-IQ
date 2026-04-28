@@ -4,6 +4,7 @@ import { IoFlagSharp } from "react-icons/io5";
 import { MdGroups } from "react-icons/md";
 import { FaTshirt } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
+import { IoMdHome } from "react-icons/io";
 
 
 const Navigation = ({ current, setCurrent }) => {
@@ -14,10 +15,18 @@ const Navigation = ({ current, setCurrent }) => {
         <div className={styles.navInner}>
 
           <div className={styles.navLogo}>
-            <span className={styles.logoText}>ScoutIQ</span>
+            <span className={styles.logoText}>Scout IQ</span>
           </div>
 
           <div className={styles.pages}>
+
+            <button
+                className={`${styles.navBtn} ${current === "home" ? styles.active : ""}`}
+                onClick={() => setCurrent("home")}
+                >
+                <IoMdHome size={24} className={styles.icon}/>
+                <span className={styles.label}>Home</span>
+            </button>
 
             <button
                 className={`${styles.navBtn} ${current === "leagues" ? styles.active : ""}`}

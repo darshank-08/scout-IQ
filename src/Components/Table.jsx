@@ -60,15 +60,15 @@ const Table = ({ name }) => {
                 </thead>
                 <tbody>
                     {table.map((team) => (
-                        <tr key={team.position}>
+                        <tr key={team.position} className={styles.tableRow}>
                             <td>{team.position}</td>
                             <td className={styles.clubName}>
-                                <img
-                                    src={team.crest}
-                                    alt={team.teamName}
-                                    className={styles.crest}
-                                />
-                                {team.teamName}
+                            <img
+                                src={team.crest}
+                                alt={team.teamName}
+                                className={styles.crest}
+                            />
+                            <span className={styles.teamText}>{team.teamName}</span>
                             </td>
                             <td>{team.played}</td>
                             <td>{team.won}</td>

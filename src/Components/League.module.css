@@ -341,11 +341,11 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 425px) {
   .grid {
     grid-template-columns: 1fr;
     max-width: 300px;
-    margin: 0 auto;
+    margin: 0.5rem auto;
   }
 
   .card {

@@ -49,6 +49,17 @@ useEffect(() => {
 
   }, [PP, selectedLeague]);
 
+  const toTitleCase = (text) => {
+    if (!text) return "N/A";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map(word =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+      )
+      .join(" ");
+  };
+
   return (
     <div className={styles.container}>
 
@@ -114,7 +125,7 @@ useEffect(() => {
                 <p className={styles.nation}>
                   {player.position ?? "N/A"}
                 </p>
-                {player.role ?? "N/A"}
+                {toTitleCase(player.role) ?? "N/A"}
               </div>
 
               <button
