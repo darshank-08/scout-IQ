@@ -1,6 +1,15 @@
+.CountryContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 40px 20px; */
+}
+
 .search{
+  width: 100%;
   display: flex;
   align-items: center;
+  align-self: flex-start;
   gap: 10px;
   margin-bottom: 30px;
 }
@@ -18,18 +27,23 @@
 .grid {
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
-  gap: clamp(0.875rem, 1.5vw, 1.25rem);
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  gap: 10px;
 }
 
 .card {
+  width: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  aspect-ratio: 4 / 4;
-  border-radius: 18px;
+  aspect-ratio: 4/4;
   overflow: hidden;
   cursor: pointer;
   animation: cardEntry 0.6s ease backwards;
   animation-delay: var(--delay);
+  border-radius: 50%;
+  /* background-image: url('/public/assets/country/'); */
 }
 
 @keyframes cardEntry {
@@ -51,15 +65,19 @@
 .card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
+  object-fit: fill;
+  zoom: 1;
+  transition: transform 0.5s ease;
 }
 
 .action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width:100%;
   padding: 20px;
   background: linear-gradient(
     to top,
@@ -69,13 +87,21 @@
   );
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
   transform: translateY(100%);
   opacity: 0;
   transition: all 0.4s ease;
 }
 
+.action h3 {
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 600;
+}
+
 .action button {
+  width: 80%;
   padding: 8px 14px;
   border: none;
   border-radius: 8px;
@@ -115,6 +141,9 @@
 
 
 @media (max-width: 900px) {
+  .search input{
+    width: 100%;
+  }
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.9rem;
@@ -122,6 +151,7 @@
 
   .card {
     border-radius: 16px;
+    border-radius: 50%;
   }
 
   .action {
@@ -130,13 +160,18 @@
 }
 
 @media (max-width: 600px) {
+  .search input{
+    width: 100%;
+  }
   .grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: 1fr;
+    max-width: 280px;
+    gap: 20px;
   }
 
   .card {
-    aspect-ratio: 2.8 / 4;
+    aspect-ratio: 3 / 3.5;
+    border-radius: 50%;
   }
 
   .action {
@@ -156,12 +191,27 @@
 }
 
 @media (max-width: 425px) {
+  .search input{
+    width: 100%;
+  }
   .grid {
     grid-template-columns: 1fr;
-    max-width: 300px;
+    max-width: 280px;
+    gap: 20px;
   }
 
   .card {
     aspect-ratio: 1 / 1.1;
+    border-radius: 50%;
+  }
+
+  .action {
+    padding: 0.75rem;
+    gap: 6px;
+  }
+
+  .action button {
+    width: 50%;
+    font-size: 0.75rem;
   }
 }

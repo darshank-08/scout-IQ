@@ -51,15 +51,6 @@ const Navigation = ({ current, setCurrent }) => {
                 <FaTshirt size={22} className={styles.icon}/>
                 <span className={styles.label}>Positions</span>
             </button>
-
-            <button
-                className={`${styles.navBtn} ${current === "search" ? styles.active : ""}`}
-                onClick={() => setCurrent("search")}
-                >
-                <IoSearch size={22} className={styles.icon}/>
-                <span className={styles.label}>Search</span>
-            </button>
-
           </div>
 
         </div>
