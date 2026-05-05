@@ -18,12 +18,20 @@
   /* padding-top: 2rem; */
 }
 
-
-.heroSection img {
+.logo {
   width: clamp(60px, 8vw, 100px);
-  margin-bottom: 900;
   height: auto;
   animation: spinSlow 20s linear infinite;
+  display: block;
+}
+
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .heroText {

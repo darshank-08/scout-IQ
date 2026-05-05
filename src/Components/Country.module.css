@@ -29,6 +29,7 @@
   width: 100%;
   grid-template-columns: repeat(4, minmax(100px, 1fr));
   gap: 10px;
+  margin-bottom: 40px;
 }
 
 .card {
@@ -125,6 +126,35 @@
 
 .card:hover img {
   transform: scale(1.05);
+}
+
+
+.dataNote {
+  display: flex;
+  align-self: start;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  border-left: 3px solid #e0b020;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0 0 0;
+  font-size: 0.82rem;
+  color: #888888;
+  line-height: 1.5;
+  max-width: 620px;
+}
+
+.noteIcon {
+  color: #e0b020;
+  font-size: 0.9rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.dataNote span {
+  color: #888888;
 }
 
 @media (max-width: 1280px) {

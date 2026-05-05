@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from "./Player.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { Radar } from "react-chartjs-2";
+import { FaInfoCircle } from 'react-icons/fa';
 import PlayerProfile from "./Components/PlayerProfile";
 import PhaseStats from "./Components/PhaseStats";
 import PlayerRadar from './Components/PlayerRadar';
@@ -434,8 +435,11 @@ const Player = () => {
         <PhaseStats title={"Defensive"} data={defensiveStats} />
       </div>
 
-      <p className={styles.disclaimer}>
-        * Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
+      <p className={styles.dataNote}>
+        <FaInfoCircle className={styles.noteIcon} />
+        <span>
+           Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
+        </span>
       </p>
     </div>
   );

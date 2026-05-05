@@ -1,4 +1,3 @@
-/* GLOBAL CONTAINER */
 .container {
   min-height: 100vh;
   background: rgb(24, 24, 24);
@@ -7,8 +6,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-
-.Branding{
+.Branding {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,10 +14,9 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   padding: 16px 20px;
+  margin-bottom: 24px;
 }
 
-/* MAIN LAYOUT */
-/* Left = Profile + Season Stats | Right = Radar + Bars */
 .mainLayout {
   display: grid;
   grid-template-columns: 380px 1fr;
@@ -27,22 +24,15 @@
   align-items: start;
 }
 
-/* LEFT SIDE */
-.leftSide {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* RIGHT SIDE */
+.leftSide,
 .rightSide {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-/* PANELS */
-.panel {
+.panel,
+.quickStatsPanel {
   background-color: rgb(24, 24, 24);
   border-radius: 16px;
   padding: 28px;
@@ -50,15 +40,13 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.radarHeader{
+.radarHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  justify-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* PANEL TITLE */
 .panelTitle {
   display: flex;
   align-items: center;
@@ -68,14 +56,13 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #ffffff;
-  margin-top: 0;
+  margin: 0;
   padding-bottom: 16px;
-  font-family: 'inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.compareBtn{
+.compareBtn {
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #ffffff;
   padding: 6px 12px;
   margin-bottom: 24px;
@@ -86,40 +73,35 @@
   transition: all 0.2s ease;
 }
 
+.compareBtn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 200, 255, 0.4);
+  color: #00c8ff;
+}
+
 .titleIcon {
   font-size: 18px;
 }
 
-.SeasonOWtitle{
+.SeasonOWtitle {
   color: #ffffff;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-top: 0;
-  margin-bottom: 20px;
+  margin: 0 0 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  font-family: "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* QUICK STATS PANEL */
-.quickStatsPanel {
-  background-color: rgb(24, 24, 24);
-  border-radius: 16px;
-  padding: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-/* STATS GRID */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
-.statCard {
+.statCard,
+.AttributeWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,22 +111,21 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   padding: 16px 10px;
-  transition: all 0.2s ease;
   text-align: center;
+  transition: all 0.2s ease;
 }
 
-.statCard:hover {
+.statCard:hover,
+.AttributeWrapper:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(0, 200, 255, 0.2);
   transform: translateY(-2px);
 }
 
-
 .statCardValue {
   font-size: 19px;
   font-weight: 600;
   color: #ffffff;
-  line-height: 1;
   margin-top: 5px;
 }
 
@@ -157,7 +138,6 @@
   margin-top: 5px;
 }
 
-/* RADAR CHART */
 .radarWrapper {
   display: flex;
   justify-content: center;
@@ -170,21 +150,6 @@
   border-radius: 35px;
 }
 
-/* ATTRIBUTE BARS */
-
-.AttributeWrapper{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 16px 10px;
-  transition: all 0.2s ease;
-  text-align: center;
-}
 .attributesList {
   display: flex;
   flex-direction: column;
@@ -234,7 +199,6 @@
   flex-shrink: 0;
 }
 
-/* PHASE STATS SECTION */
 .phaseStatsSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -242,17 +206,26 @@
   margin-top: 25px;
 }
 
-/* LOADING STATE */
-.loadingContainer {
+.loadingContainer,
+.errorContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  gap: 16px;
+  font-size: 16px;
+}
+
+.loadingContainer {
   background: rgb(24, 24, 24);
   color: #9ca3af;
-  font-size: 16px;
-  gap: 16px;
+}
+
+.errorContainer {
+  background: linear-gradient(135deg, #0a0f1a 0%, #111827 50%, #0a1a10 100%);
+  color: #ef4444;
+  font-size: 18px;
 }
 
 .spinner {
@@ -265,8 +238,6 @@
 }
 
 .disclaimer {
-  position: relative;
-  top: 10px;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.5);
   margin-top: 0.7rem;
@@ -274,36 +245,66 @@
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
+  to { transform: rotate(360deg); }
+}
+
+
+.dataNote {
+  display: flex;
+  align-self: start;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  border-left: 3px solid #e0b020;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0 0 0;
+  font-size: 0.82rem;
+  color: #888888;
+  line-height: 1.5;
+  max-width: 620px;
+}
+
+.noteIcon {
+  color: #e0b020;
+  font-size: 0.9rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+/* Responsiveness */
+
+/* Large desktop */
+@media (max-width: 1280px) {
+  .mainLayout {
+    grid-template-columns: 340px 1fr;
+    gap: 20px;
+  }
+
+  .panel,
+  .quickStatsPanel {
+    padding: 24px;
   }
 }
 
-/* Error */
-.errorContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0f1a 0%, #111827 50%, #0a1a10 100%);
-  color: #ef4444;
-  gap: 16px;
-  font-size: 18px;
-}
-
-
+/* Tablet landscape */
 @media (max-width: 1024px) {
+  .container {
+    padding: 24px;
+  }
+
   .mainLayout {
     grid-template-columns: 1fr;
   }
 
-  .leftSide {
+  .leftSide,
+  .rightSide {
     width: 100%;
   }
 
-  .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
+  .radarWrapper {
+    max-width: 380px;
   }
 
   .phaseStatsSection {
@@ -312,20 +313,56 @@
   }
 }
 
+/* Tablet portrait */
 @media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .panel,
+  .quickStatsPanel {
+    padding: 20px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
   .phaseStatsSection {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+
+  .radarWrapper {
+    max-width: 340px;
+    border-radius: 24px;
+  }
+
+  .attrName {
+    width: 80px;
+    font-size: 13px;
+  }
 }
 
+/* Mobile large */
 @media (max-width: 640px) {
   .container {
     padding: 16px;
   }
 
+  .panel,
+  .quickStatsPanel {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statCardValue {
+    font-size: 17px;
   }
 
   .attrName {
@@ -337,9 +374,71 @@
     font-size: 14px;
   }
 
-  .phaseStatsSection {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 16px;
+  .radarWrapper {
+    max-width: 300px;
+    padding: 8px;
+  }
+}
+
+/* Mobile small */
+@media (max-width: 420px) {
+  .container {
+    padding: 12px;
+  }
+
+  .panel,
+  .quickStatsPanel {
+    padding: 16px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .panelTitle,
+  .SeasonOWtitle {
+    font-size: 11px;
+  }
+
+  .statCardValue {
+    font-size: 15px;
+  }
+
+  .statCardLabel {
+    font-size: 10px;
+  }
+
+  .attrName {
+    width: 60px;
+    font-size: 11px;
+  }
+
+  .attrValue {
+    font-size: 13px;
+    width: 30px;
+  }
+
+  .radarWrapper {
+    max-width: 260px;
+    padding: 6px;
+    border-radius: 20px;
+  }
+
+  .compareBtn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}
+
+/* Disable hover on touch */
+@media (hover: none) {
+  .statCard:hover,
+  .AttributeWrapper:hover,
+  .compareBtn:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.06);
+    color: inherit;
   }
 }
