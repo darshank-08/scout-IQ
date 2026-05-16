@@ -6,6 +6,7 @@ import PlayerRadar from './Components/PlayerRadar';
 import AttributeRating from './Components/AttibuteRating';
 import PhaseStats from './Components/PhaseStats';
 import RadarCompare from './Components/RadarCompare';
+import { FaInfoCircle } from 'react-icons/fa';
 
 const Compare = () => {
   const { id } = useParams();
@@ -29,7 +30,6 @@ const Compare = () => {
         if (res.ok) {
           const data = await res.json();
           setPlayer1(data);
-          console.log(data)
         } else {
           setError(`Failed to fetch player data (${res.status})`);
         }
@@ -47,7 +47,7 @@ const Compare = () => {
   }, [id]);
 
 
-  // ✅ Debounced search
+  // Debounced search
   useEffect(() => {
     if (query.trim().length < 2) {
       setResults([]);
@@ -76,7 +76,6 @@ const Compare = () => {
       if (res.ok) {
         const data = await res.json();
         setPlayer2(data);
-        console.log("Player2 :" + data)
       } else {
         setError(`Failed to fetch player 2 data (${res.status})`);
       }
@@ -472,8 +471,11 @@ const Compare = () => {
         )}
       </div>
 
-      <p className={styles.disclaimer}>
-        * Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
+      <p className={styles.dataNote}>
+        <FaInfoCircle className={styles.noteIcon} />
+        <span>
+           Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
+        </span>
       </p>
 
     </div>

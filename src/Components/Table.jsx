@@ -48,6 +48,7 @@ const Table = ({ name }) => {
             <table className={styles.table}>
                 <thead>
                     <tr>
+                        
                         <th>#</th>
                         <th>Club</th>
                         <th>P</th>
@@ -61,7 +62,7 @@ const Table = ({ name }) => {
                 <tbody>
                     {table.map((team) => (
                         <tr key={team.position} className={styles.tableRow}>
-                            <td>{team.position}</td>
+                            <td> {team.position} </td>
                             <td className={styles.clubName}>
                             <img
                                 src={team.crest}

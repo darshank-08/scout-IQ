@@ -249,12 +249,125 @@
   position: relative;
 }
 
-.disclaimer {
-  position: relative;
-  top: 10px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-  margin-top: 0.7rem;
+.dataNote {
+  display: flex;
+  align-self: start;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  border-left: 3px solid #e0b020;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0 0 0;
+  font-size: 0.82rem;
+  color: #888888;
   line-height: 1.5;
-  padding-left: 28px;
+  max-width: 620px;
+}
+
+.noteIcon {
+  color: #e0b020;
+  font-size: 0.9rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 24px;
+  }
+
+  .compareGrid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 20px 0;
+  }
+
+  .vsDivider {
+    display: none;
+  }
+
+  .headerBar {
+    padding: 0;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .RadarWrapper {
+    margin: 15px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 18px;
+  }
+
+  .headerBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchInput {
+    width: 100%;
+  }
+
+  .sectionTitle {
+    justify-content: flex-start;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .playerProfile,
+  .quickStatsPanel,
+  .RadarWrapper {
+    padding: 20px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 14px;
+  }
+
+  .sectionTitle{
+    margin-bottom: 20px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statRow {
+    padding: 10px 0;
+  }
+
+  .statLabel {
+    font-size: 13px;
+  }
+
+  .statValue {
+    font-size: 15px;
+  }
+
+  .dataNote {
+    font-size: 0.78rem;
+    padding: 0.7rem 0.85rem;
+  }
+}
+
+@media (hover: none) {
+  .statCard:hover,
+  .statRow:hover {
+    transform: none;
+    background: inherit;
+    border-color: inherit;
+  }
 }

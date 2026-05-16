@@ -100,7 +100,6 @@ const filteredPlayers = useMemo(() => {
   });
 }, [players, searchTerm, positionFilter]);
 
-console.log(filteredPlayers)
 
 
   if (!selectedCountry) {
