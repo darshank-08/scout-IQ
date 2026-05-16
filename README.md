@@ -4,6 +4,8 @@ ScoutIQ is a football scouting and analytics platform designed to help users dis
 
 The platform provides player statistics, comparison tools, league standings, match updates, and scouting insights across the top 5 European football leagues through an interactive and responsive interface.
 
+This repository contains Front-end code.
+
 ---
 
 ## Supported Leagues
