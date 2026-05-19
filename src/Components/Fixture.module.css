@@ -37,6 +37,9 @@
 }
 
 .matchCard {
+  display: flex;
+  flex-direction: column;
+  
   background: #08080881;
   border-radius: 12px;
   padding: 20px;
@@ -101,12 +104,63 @@
   border-radius: 50%;
 }
 
+.score{
+  display: flex;
+  gap: 5px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+}
+
 .date {
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  gap: 10px;
   margin-top: 15px;
   font-size: 12px;
   color: #b5b5b5;
   padding-top: 10px;
   border-top: 1px solid #8b8b8b62;
+}
+
+.noFixtures {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+}
+
+.live {
+    color: #ff0000;
+    font-weight: bold;
+    animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.scheduled {
+    color: #1e97d4;
+    font-weight: bold;
+}
+
+.finished {
+    color: #50c136;
+    font-weight: bold;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 16px;
 }
 
 @media (max-width: 1400px) {

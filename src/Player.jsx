@@ -358,7 +358,7 @@ const Player = () => {
   if (error || !player) {
     return (
       <div className={styles.errorContainer}>
-        <h2>⚠️ {error || "Player not found"}</h2>
+        <h2>{error || "Player not found"}</h2>
         <button onClick={() => navigate(-1)} className={styles.backBtn}>
           ← Go Back
         </button>
@@ -400,7 +400,7 @@ const Player = () => {
         </div>
         
 
-        {/* ===== RIGHT SIDE ===== */}
+        {/*  RIGHT SIDE  */}
         <div className={styles.rightSide}>
 
           {/* Radar Chart */}

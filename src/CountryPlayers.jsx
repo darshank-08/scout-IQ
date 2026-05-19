@@ -101,7 +101,6 @@ const filteredPlayers = useMemo(() => {
 }, [players, searchTerm, positionFilter]);
 
 
-
   if (!selectedCountry) {
     return (
       <div className={styles.rosterContainer}>

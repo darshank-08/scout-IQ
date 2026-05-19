@@ -13,32 +13,38 @@ const LeagueData = () => {
   const [players, setPlayers] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("players");
   const [query, setQuery] = useState('');
+  const [status, setStatus] = useState("LIVE")
 
   switch (name) {
     case "Premier League":
       var country = "England";
       var start = "2025/08/15";
       var end = "2026/05/24";
+      var img = "../public/assets/leagues/PL.jpg";
       break;
     case "La Liga":
       var country = "Spain";
       var start = "2025/08/16";
       var end = "2026/05/24";
+      var img = "../public/assets/leagues/LaLiga.jpg";
       break;
     case "Bundesliga":
       var country = "Germany";
       var start = "2025/08/22";
       var end = "2026/05/16";
+      var img = "../public/assets/leagues/Bundesliga.jpg";
       break;
     case "Serie A":
       var country = "Italy";
       var start = "2025/08/15";
       var end = "2026/05/24";
+      var img = "../public/assets/leagues/Serie_A.jpg";
       break;
     case "Ligue 1":
       var country = "France"; 
       var start = "2025/08/23";
       var end = "2026/05/24";
+      var img = "../public/assets/leagues/Ligue_1.jpg";
       break;
     default:
       var country = "Unknown";
@@ -72,6 +78,11 @@ useEffect(() => {
     setQuery(e.target.value);
   };
 
+  const handleFixtureChange = (value) => {
+    setStatus(value);
+  }
+
+  // console.log(status)
 
 return (
   <div className={styles.dashboard}>
@@ -79,7 +90,10 @@ return (
 
       <div className={styles.header}>
         <div className={styles.content}>
-          <h1 className={styles.title}>{name}</h1>
+          <div className={styles.titleRow}>
+            <h1 className={styles.title}>{name}</h1>
+            <img  src={img} alt={name} />
+          </div>
           <p className={styles.subtitle}>
             {country}
             <img className={styles.flag} src={`../public/assets/country/${country}.jpg`} alt={country} />
@@ -160,14 +174,25 @@ return (
         
         <div className={styles["card-header"]}>
           <h2>{selectedFilter === 'table' ? "Table" : selectedFilter === 'players' ? 'Players' : selectedFilter === 'fixtures' ? 'Fixtures': 'table'} </h2>
-          <span className={styles.count}>
-            {selectedFilter === 'table' ? "Table" : selectedFilter === 'players' ? players.length : selectedFilter === 'fixtures' ? 'Fixtures': 'table'}
+          <span className={selectedFilter === 'players' ? styles.on : styles.off}>
+            {selectedFilter === 'players' && players.length}
+
+            {selectedFilter === 'fixtures' && (
+              <select 
+                className={styles.dropdown} 
+                onChange={(e) => handleFixtureChange(e.target.value)}
+              >
+                <option value="LIVE">Live</option>
+                <option value="SCHEDULED">Upcoming</option>
+                <option value="FINISHED">Completed</option>
+              </select>
+            )}
           </span>
         </div>
 
         {selectedFilter === 'table' ? <Table name={name}/> :
          selectedFilter === 'players' ? <LeaguePlayers name={name} query={query} players={players}/>:
-         selectedFilter === 'fixtures' ? <Fixture name={name} title={"league"}/>: 'table'}
+         selectedFilter === 'fixtures' ? <Fixture name={name} title={"league"} FixStatus={status}/>: 'table'}
 
       </div>
 

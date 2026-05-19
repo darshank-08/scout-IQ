@@ -73,6 +73,18 @@
 }
 
 /*  Header  */
+
+.titleRow{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.titleRow img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
 .title {
   font-size: clamp(32px, 8vw, 64px);
   font-weight: 900;
@@ -189,7 +201,7 @@
   color: var(--text-primary);
 }
 
-.count {
+.on {
   color: var(--accent-cyan-light);
   font-weight: 700;
   font-size: clamp(13px, 2vw, 15px);
@@ -199,7 +211,13 @@
   border: 1px solid rgba(147, 164, 167, 0.2);
 }
 
-
+.dropdown{
+  background-color: transparent;
+  margin-right: 10px;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 7px;
+}
 .disclaimer {
   position: relative;
   top: 10px;

@@ -6,8 +6,7 @@ const ClubLogo = ({ league, club, size = 'medium', className = '' }) => {
   const [imageError, setImageError] = useState(false);
   
   const logoPath = getClubLogo(league, club);
-  const defaultLogo = '/assets/clubs/default-club.svg'; // Create a default placeholder
-
+  const defaultLogo = '/assets/clubs/default-club.svg';
   const sizeClasses = {
     small: styles.small,
     medium: styles.medium,

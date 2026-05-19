@@ -80,9 +80,6 @@ const leagues = (name) => {
                     "--delay": `${index * 0.1}s`,
                   }}
                 >
-
-    
-                  {/* Default State - Big Logo */}
                   <div className={styles.logoSection}>
                     <div className={styles.logoWrapper}>
                       <img
@@ -95,18 +92,16 @@ const leagues = (name) => {
                     <span className={styles.countryTag}>{league.country}</span>
                   </div>
     
-                  {/* Hover State - Info Overlay */}
+                  
                   <div className={styles.overlay}>
                     <div className={styles.overlayInner}>
-                      {/* Mini Logo */}
+                      
                       <div className={styles.overlayLogo}>
                         <img src={league.logo} alt={league.name} />
                       </div>
     
-                      {/* League Name */}
                       <h3 className={styles.overlayTitle}>{league.name}</h3>
     
-                      {/* Info Stats */}
                       <div className={styles.stats}>
                         <div className={styles.stat}>
                           <span className={styles.statLabel}>Country</span>
@@ -128,7 +123,6 @@ const leagues = (name) => {
                         </span>
                       </div>
     
-                      {/* CTA Button */}
                         <button 
                         className={styles.btn} 
                         onClick={() => leagues(league.name)}
