@@ -52,8 +52,10 @@ const CountryPlayers = () => {
         setLoading(true);
         setError(null);
 
+        const API = import.meta.env.VITE_API_BASE_URL;
+
         const res = await fetch(
-          `http://localhost:8080/api/scouting/nation?nation=${selectedCountry.country}`,
+          `${API}/api/scouting/nation?nation=${selectedCountry.country}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },

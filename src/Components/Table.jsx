@@ -24,8 +24,9 @@ const Table = ({ name }) => {
     useEffect(() => {
         const standings = async () => {
             if (!clubCode) return;
+            const API = import.meta.env.VITE_API_BASE_URL;
 
-            const res = await fetch(`http://localhost:8080/api/football/standings/${clubCode}`, {
+            const res = await fetch(`${API}/api/football/standings/${clubCode}`, {
                 method: "GET",
             });
 
@@ -39,8 +40,6 @@ const Table = ({ name }) => {
         }
         standings();
     }, [name, clubCode]);
-
-    // console.log("Table Data:", table); // Debugging log
 
 
     return (

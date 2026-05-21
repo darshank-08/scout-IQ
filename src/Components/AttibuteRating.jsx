@@ -185,8 +185,9 @@ const AttributeRating = ({ id }) => {
       try {
         setLoading(true);
         setError(null);
+        const API = import.meta.env.VITE_API_BASE_URL;
 
-        const res = await fetch(`http://localhost:8080/api/scouting/players/${id}`);
+        const res = await fetch(`${API}/api/scouting/players/${id}`);
 
         if (res.ok) {
           const data = await res.json();

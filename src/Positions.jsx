@@ -36,9 +36,10 @@ const Positions = () => {
       try {
         setLoading(true);
         const leagueQuery = selectedLeague === "All" ? "" : selectedLeague;
+        const API = import.meta.env.VITE_API_BASE_URL;
 
         const res = await fetch(
-          `http://localhost:8080/api/scouting/primaryPosition?primaryPosition=${PP}&league=${leagueQuery}`
+          `${API}/api/scouting/primaryPosition?primaryPosition=${PP}&league=${leagueQuery}`
         );
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();

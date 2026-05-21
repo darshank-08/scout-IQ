@@ -17,7 +17,6 @@ const TopScorers = ({league}) => {
     }
 
     const leagueCode = getLeagueCode(league);
-    // console.log("League Code:", leagueCode); // Debugging log
 
   return (
     <div className={styles.card}>

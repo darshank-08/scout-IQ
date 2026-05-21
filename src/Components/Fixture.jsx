@@ -25,8 +25,9 @@ export const Fixture = ({ name, title, FixStatus }) => {
         setLoading(true);
 
         try {
+            const API = import.meta.env.VITE_API_BASE_URL;
             const res = await fetch(
-                `http://localhost:8080/api/football/fixtures/${LeagueCode}?status=${status}`,
+                `${API}/api/football/fixtures/${LeagueCode}?status=${status}`,
                 { 
                     method: "GET",
                     headers: {

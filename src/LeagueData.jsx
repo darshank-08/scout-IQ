@@ -54,8 +54,10 @@ useEffect(() => {
   const playersData = async () =>{
     
     var league = name;
+    const API = import.meta.env.VITE_API_BASE_URL;
 
-      const res = await fetch(`http://localhost:8080/api/scouting/playersByLeague/${league}`, {
+    const res = await fetch(`${API}/api/scouting/playersByLeague/${league}`,
+    {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -81,8 +83,6 @@ useEffect(() => {
   const handleFixtureChange = (value) => {
     setStatus(value);
   }
-
-  // console.log(status)
 
 return (
   <div className={styles.dashboard}>

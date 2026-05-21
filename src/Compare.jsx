@@ -25,7 +25,9 @@ const Compare = () => {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(`http://localhost:8080/api/scouting/players/${id}`);
+        let API = import.meta.env.VITE_API_BASE_URL;
+
+        const res = await fetch(`${API}/api/scouting/players/${id}`);
 
         if (res.ok) {
           const data = await res.json();
@@ -54,9 +56,11 @@ const Compare = () => {
       return;
     }
 
+    const API = import.meta.env.VITE_API_BASE_URL;
+
     const timer = setTimeout(async () => {
       const res = await fetch(
-        `http://localhost:8080/api/scouting/names?query=${encodeURIComponent(query)}`
+        `${API}/api/scouting/names?query=${encodeURIComponent(query)}`
       );
       const data = await res.json();
       setResults(data);
@@ -71,7 +75,8 @@ const Compare = () => {
     try {
       setError(null);
 
-      const res = await fetch(`http://localhost:8080/api/scouting/players/${selectedId}`);
+      const API = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${API}/api/scouting/players/${selectedId}`);
 
       if (res.ok) {
         const data = await res.json();
@@ -243,7 +248,7 @@ const Compare = () => {
 
 
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (loading) return <div className={styles.loading}><h2>Loading...</h2></div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
   return (
