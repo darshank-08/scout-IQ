@@ -4,15 +4,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import { FaSearch } from "react-icons/fa";
 
 const countries = [
-  { id: 1,  country: "ARG", flagCode: "AR", fifaRank: 3,  worldCups: 3 },
-  { id: 2,  country: "FRA", flagCode: "FR", fifaRank: 1,  worldCups: 2 },
-  { id: 3,  country: "ESP", flagCode: "ES", fifaRank: 2,  worldCups: 1 },
-  { id: 4,  country: "ENG", flagCode: "GB", fifaRank: 4,  worldCups: 1 },
-  { id: 5,  country: "BRA", flagCode: "BR", fifaRank: 6,  worldCups: 5 },
-  { id: 6,  country: "BEL", flagCode: "BE", fifaRank: 9,  worldCups: 0 },
-  { id: 7,  country: "NED", flagCode: "NL", fifaRank: 7,  worldCups: 0 },
-  { id: 8,  country: "POR", flagCode: "PT", fifaRank: 5,  worldCups: 0 },
-  { id: 9,  country: "ITA", flagCode: "IT", fifaRank: 12, worldCups: 4 },
+  { id: 1, country: "ARG", flagCode: "AR", fifaRank: 3, worldCups: 3 },
+  { id: 2, country: "FRA", flagCode: "FR", fifaRank: 1, worldCups: 2 },
+  { id: 3, country: "ESP", flagCode: "ES", fifaRank: 2, worldCups: 1 },
+  { id: 4, country: "ENG", flagCode: "GB", fifaRank: 4, worldCups: 1 },
+  { id: 5, country: "BRA", flagCode: "BR", fifaRank: 6, worldCups: 5 },
+  { id: 6, country: "BEL", flagCode: "BE", fifaRank: 9, worldCups: 0 },
+  { id: 7, country: "NED", flagCode: "NL", fifaRank: 7, worldCups: 0 },
+  { id: 8, country: "POR", flagCode: "PT", fifaRank: 5, worldCups: 0 },
+  { id: 9, country: "ITA", flagCode: "IT", fifaRank: 12, worldCups: 4 },
   { id: 10, country: "COL", flagCode: "CO", fifaRank: 13, worldCups: 0 },
   { id: 11, country: "CRO", flagCode: "HR", fifaRank: 11, worldCups: 0 },
   { id: 12, country: "GER", flagCode: "DE", fifaRank: 10, worldCups: 4 },
@@ -41,8 +41,9 @@ const CountryPlayers = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [positionFilter, setPositionFilter] = useState("ALL");
+  const [selectedProfile, setSelectedProfile] = useState("");
 
-  const selectedCountry = countries.find(c => c.id === Number(id));
+  const selectedCountry = countries.find((c) => c.id === Number(id));
 
   useEffect(() => {
     if (!selectedCountry) return;
@@ -75,33 +76,34 @@ const CountryPlayers = () => {
     };
 
     fetchPlayerData();
-  }, [id]);
+  }, [selectedCountry]);
 
-const filteredPlayers = useMemo(() => {
-  if (!Array.isArray(players)) return [];
+  useEffect(() => {
+    setSelectedProfile("");
+  }, [positionFilter]);
 
-  const search = searchTerm.toLowerCase();
+  const filteredPlayers = useMemo(() => {
+    if (!Array.isArray(players)) return [];
 
-  return players.filter(player => {
-    const name = player.name?.toLowerCase() || "";
-    const position = player.position?.toUpperCase() || "";
-    const club = player.clubName?.toLowerCase() || "";
-    const role = player.role?.toLowerCase() || "";
+    const search = searchTerm.toLowerCase().trim();
 
-    // Search by name
-    const matchesSearch =
-      !search ||
-      name.includes(search)
+    return players.filter((player) => {
+      const name = player.name?.toLowerCase() || "";
+      const playerPositions = (player.position || "")
+        .toUpperCase()
+        .split(",")
+        .map((p) => p.trim());
+      const role = player.role?.toLowerCase() || "";
 
-    // Position 
-    const matchesPosition =
-      positionFilter === "ALL" ||
-      position.split(",").includes(positionFilter);
+      const matchesSearch = !search || name.includes(search);
+      const matchesPosition =
+        positionFilter === "ALL" || playerPositions.includes(positionFilter);
+      const matchesProfile =
+        !selectedProfile || role === selectedProfile.toLowerCase();
 
-    return matchesSearch && matchesPosition;
-  });
-}, [players, searchTerm, positionFilter]);
-
+      return matchesSearch && matchesPosition && matchesProfile;
+    });
+  }, [players, searchTerm, positionFilter, selectedProfile]);
 
   if (!selectedCountry) {
     return (
@@ -129,8 +131,6 @@ const filteredPlayers = useMemo(() => {
 
   return (
     <div className={styles.rosterContainer}>
-
-      {/* Header */}
       <header className={styles.rosterHeader}>
         <div className={styles.titleRow}>
           <img
@@ -145,10 +145,7 @@ const filteredPlayers = useMemo(() => {
         </div>
       </header>
 
-      {/* Filters */}
       <div className={styles.filtersBar}>
-
-        {/* Search */}
         <div className={`${styles.filterGroup} ${styles.searchPlayers}`}>
           <label htmlFor="search">SEARCH PLAYERS</label>
           <div className={styles.searchInputWrapper}>
@@ -158,16 +155,15 @@ const filteredPlayers = useMemo(() => {
               type="text"
               placeholder="Player name"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Position Buttons */}
         <div className={`${styles.filterGroup} ${styles.positionFilter}`}>
           <label>POSITION</label>
           <div className={styles.positionButtons}>
-            {POSITIONS.map(pos => (
+            {POSITIONS.map((pos) => (
               <button
                 key={pos}
                 className={positionFilter === pos ? styles.active : ""}
@@ -179,35 +175,99 @@ const filteredPlayers = useMemo(() => {
           </div>
         </div>
 
-        {/* Player Count */}
-        <div className={styles.playerCount}>
-          {filteredPlayers.length} Players
+        <div className={styles.playerCount}>{filteredPlayers.length} Players</div>
+
+        <div className={styles.Profile}>
+          {positionFilter === "GK" && (
+            <select
+              className={styles.profileSelect}
+              value={selectedProfile}
+              onChange={(e) => setSelectedProfile(e.target.value)}
+            >
+              <option value="">All GK Profiles</option>
+              <option value="attacking gk">Attacking Keeper</option>
+              <option value="defensive gk">Defensive Keeper</option>
+            </select>
+          )}
+
+          {positionFilter === "DF" && (
+            <select
+              className={styles.profileSelect}
+              value={selectedProfile}
+              onChange={(e) => setSelectedProfile(e.target.value)}
+            >
+              <option value="">All DF Profiles</option>
+              <option value="ball playing cb">Ball-Playing Defender</option>
+              <option value="stopper">Stopper</option>
+              <option value="attacking fullback">Attacking Fullback</option>
+              <option value="defensive fullback">Defensive Fullback</option>
+            </select>
+          )}
+
+          {positionFilter === "MF" && (
+            <select
+              className={styles.profileSelect}
+              value={selectedProfile}
+              onChange={(e) => setSelectedProfile(e.target.value)}
+            >
+              <option value="">All MF Profiles</option>
+              <option value="anchor man">Anchor Man</option>
+              <option value="orchestrator">Orchestrator</option>
+              <option value="box to box">Box-to-Box</option>
+              <option value="creative">Playmaker</option>
+              <option value="hole player">Hole Player</option>
+            </select>
+          )}
+
+          {positionFilter === "FW" && (
+            <select
+              className={styles.profileSelect}
+              value={selectedProfile}
+              onChange={(e) => setSelectedProfile(e.target.value)}
+            >
+              <option value="">All FW Profiles</option>
+              <option value="goal poacher">Goal Poacher</option>
+              <option value="target man">Target Man</option>
+              <option value="deep lying forward">False 9</option>
+              <option value="inverted winger">Inverted Winger</option>
+              <option value="wide winger">Wide Winger</option>
+            </select>
+          )}
         </div>
       </div>
 
-      {/* Player Grid */}
       <div className={styles.playerGrid}>
         {filteredPlayers.length === 0 ? (
           <p className={styles.noResults}>
             No players found for <strong>{selectedCountry.country}</strong>.
           </p>
         ) : (
-          filteredPlayers.map((player, index) =>  {
-            const name     = player.name ?? "Unknown";
-            const age      = player.age ?? "--";
-            const position = player.position ?? "--";
-            const club     = player.clubName ?? "--";
+          filteredPlayers.map((player, index) => {
+            const name = player.name ?? "Unknown";
+            const age = player.age ?? "--";
+            const playerPosition = player.position ?? "--";
+            const club = player.clubName ?? "--";
 
             const displayStats = Object.entries(player)
-              .filter(([key]) =>
-                !["id", "name", "age", "position", "nation",
-                  "nationality", "clubName"].includes(key))
+              .filter(
+                ([key]) =>
+                  ![
+                    "id",
+                    "name",
+                    "age",
+                    "position",
+                    "nation",
+                    "nationality",
+                    "clubName",
+                  ].includes(key)
+              )
               .slice(0, 2);
 
             return (
-              <div key={`${player.id}-${player.clubName}-${index}`} className={styles.playerCard}>
-
-                {/* Card Header */}
+              <div
+                key={`${player.id}-${player.clubName}-${index}`}
+                className={styles.playerCard}
+              >
                 <div className={styles.cardHeader}>
                   <h3
                     className={styles.playerName}
@@ -216,16 +276,15 @@ const filteredPlayers = useMemo(() => {
                     {name}
                   </h3>
                   <span className={styles.playerAge}>
-                    AGE<br />{age}
+                    AGE<br />
+                    {age}
                   </span>
                 </div>
 
-                {/* Player Info */}
                 <div className={styles.playerDetails}>
-
                   <div className={styles.infoRow}>
                     <span className={styles.detailLabel}>POSITION</span>
-                    <span className={styles.detailValue}>{position}</span>
+                    <span className={styles.detailValue}>{playerPosition}</span>
                   </div>
 
                   <div className={styles.infoRow}>
@@ -252,7 +311,6 @@ const filteredPlayers = useMemo(() => {
                   </div>
                 </div>
 
-                {/* Stats */}
                 <div className={styles.playerStats}>
                   {displayStats.length > 0 ? (
                     displayStats.map(([key, value]) => (
@@ -270,7 +328,6 @@ const filteredPlayers = useMemo(() => {
                     </div>
                   )}
                 </div>
-
               </div>
             );
           })

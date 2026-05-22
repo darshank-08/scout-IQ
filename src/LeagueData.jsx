@@ -21,33 +21,40 @@ const LeagueData = () => {
       var start = "2025/08/15";
       var end = "2026/05/24";
       var img = "../public/assets/leagues/PL.jpg";
+      var countryFlag = "GB";
       break;
     case "La Liga":
       var country = "Spain";
       var start = "2025/08/16";
       var end = "2026/05/24";
       var img = "../public/assets/leagues/LaLiga.jpg";
+      var countryFlag = "ES";
       break;
     case "Bundesliga":
       var country = "Germany";
       var start = "2025/08/22";
       var end = "2026/05/16";
       var img = "../public/assets/leagues/Bundesliga.jpg";
+      var countryFlag = "DE";
       break;
     case "Serie A":
       var country = "Italy";
       var start = "2025/08/15";
       var end = "2026/05/24";
       var img = "../public/assets/leagues/Serie_A.jpg";
+      var countryFlag = "IT";
       break;
     case "Ligue 1":
       var country = "France"; 
       var start = "2025/08/23";
       var end = "2026/05/24";
       var img = "../public/assets/leagues/Ligue_1.jpg";
+      var countryFlag = "FR";
       break;
     default:
       var country = "Unknown";
+      var img = "../public/assets/leagues/Unknown.jpg";
+      var countryFlag = "XX";
   }
 
 useEffect(() => {
@@ -96,7 +103,7 @@ return (
           </div>
           <p className={styles.subtitle}>
             {country}
-            <img className={styles.flag} src={`../public/assets/country/${country}.jpg`} alt={country} />
+            <img className={styles.flag} src={`https://flagsapi.com/${countryFlag}/shiny/64.png`} alt={country} />
           </p>
 
           <p className={styles.dates}>{start ?? "N/A"} - {end ?? "N/A"}</p>

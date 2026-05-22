@@ -129,8 +129,8 @@ const Positions = () => {
               onChange={(e) => setSelectedProfile(e.target.value)}
             >
               <option value="">All GK Profiles</option>
-              <option value="sweeper">Attacking Keeper</option>
-              <option value="shotStopper">Defensive Keeper</option>
+              <option value="attacking gk">Attacking Keeper</option>
+              <option value="defensive gk">Defensive Keeper</option>
             </select>
           )}
 

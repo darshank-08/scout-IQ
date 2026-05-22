@@ -43,8 +43,6 @@
   cursor: pointer;
   animation: cardEntry 0.6s ease backwards;
   animation-delay: var(--delay);
-  border-radius: 50%;
-  /* background-image: url('/public/assets/country/'); */
 }
 
 @keyframes cardEntry {
