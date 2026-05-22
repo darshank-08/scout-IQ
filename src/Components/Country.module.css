@@ -179,7 +179,6 @@
 
   .card {
     border-radius: 16px;
-    border-radius: 50%;
   }
 
   .action {
@@ -199,7 +198,6 @@
 
   .card {
     aspect-ratio: 3 / 3.5;
-    border-radius: 50%;
   }
 
   .action {
@@ -230,7 +228,6 @@
 
   .card {
     aspect-ratio: 1 / 1.1;
-    border-radius: 50%;
   }
 
   .action {
