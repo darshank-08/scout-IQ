@@ -5,6 +5,7 @@ import League from "./Components/League";
 import Positions from "./Components/PositionsCard";
 import Country from "./Components/Country";
 import LandingPage from "./Components/LandingPage";
+import About from "./Components/About";
 
 
 function Home() {
@@ -16,14 +17,14 @@ function Home() {
       <Navigation current={current} setCurrent={setCurrent} />
 
       <section className={styles.app}>
-        {current !== "home" &&
+        {current !== "home" && current !== "about" ? (
           <div className={styles.netflix_style}>
             <span>|</span>
             <h3 className={styles.sectionTitle}>
               {current.charAt(0).toUpperCase() + current.slice(1)}
             </h3>
           </div>
-        }
+        ) : null}
         <div className={styles.content}>
 
           {/* CONTENT */}
@@ -31,6 +32,7 @@ function Home() {
           {current === "leagues" && <League />}
           {current === "countries" && <Country />}
           {current === "positions" && <Positions />}
+          {current === "about" && <About />}
 
         </div>
       </section>

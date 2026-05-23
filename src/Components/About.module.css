@@ -1,0 +1,193 @@
+.aboutContainer {
+  max-width: 75vw;
+  margin: 0 auto;
+  padding: 5px 24px 20px 24px;
+  color: #e2e8f0;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.heroTitle {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.heroSub {
+  font-size: 1rem;
+  color: #94a3b8;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #00c8ff;
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+}
+
+.text {
+  font-size: 0.93rem;
+  color: #94a3b8;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.text strong {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+/* Stack Grid */
+.stackGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.stackCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stackLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748b;
+}
+
+.stackValue {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+/* Developer Card */
+.developerCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.developerName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.developerRole {
+  font-size: 0.85rem;
+  color: #00c8ff;
+  font-weight: 500;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+/* Social Links */
+.socialLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.socialLink:hover {
+  color: #00c8ff;
+}
+
+.socialIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.82rem;
+  color: #475569;
+}
+@media (max-width: 900px) {
+  .aboutContainer{
+    padding-bottom: 50px;
+  }
+  .stackGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 600px) {
+  .aboutContainer{
+    padding-bottom: 50px;
+  }
+
+  .heroTitle {
+    font-size: 1.8rem; 
+  }
+
+  .heroSub {
+    font-size: 0.95rem;
+  }
+  
+  .developerCard {
+    padding: 20px;
+  }
+}
+
+/* Small Mobile View */
+@media (max-width: 425px) {
+  .aboutContainer{
+    padding-bottom: 50px;
+  }
+
+  .heroTitle {
+    font-size: 1.6rem;
+  }
+
+  .stackGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .socialLink {
+    padding: 4px 0;
+    width: fit-content;
+  }
+}

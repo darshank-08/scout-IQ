@@ -1,9 +1,8 @@
 import React from 'react'
 import styles from "./Navigation.module.css"
-import { IoFlagSharp } from "react-icons/io5";
 import { MdGroups } from "react-icons/md";
-import { FaTshirt } from "react-icons/fa";
-import { IoSearch } from "react-icons/io5";
+import { FaTshirt, FaGhost } from "react-icons/fa";
+import { IoSearch, IoInformationCircleSharp, IoFlagSharp } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 
 
@@ -50,6 +49,14 @@ const Navigation = ({ current, setCurrent }) => {
                 >
                 <FaTshirt size={22} className={styles.icon}/>
                 <span className={styles.label}>Positions</span>
+            </button>
+
+            <button
+                className={`${styles.navBtn} ${current === "about" ? styles.active : ""}`}
+                onClick={() => setCurrent("about")}
+                >
+                <FaGhost size={22} className={styles.icon}/>
+                <span className={styles.label}>About</span>
             </button>
           </div>
 

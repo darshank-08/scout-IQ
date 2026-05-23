@@ -7,6 +7,7 @@ import Positions from './Positions';
 import Home from './Home';
 import Countries from './Components/Country';
 import CountryPlayers from './CountryPlayers';
+import About from './Components/About';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
       <Route path="/compare/:id" element={<Compare />} />
       <Route path="/positions/:position" element={<Positions />}></Route>
       <Route path="/National/:id" element={<CountryPlayers />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   )
 }
