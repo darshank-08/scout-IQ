@@ -59,14 +59,7 @@ const About = () => {
         <div className={styles.developerCard}>
           <div className={styles.developerInfo}>
             <h3 className={styles.developerName}>Darshan Karagir</h3>
-            <p className={styles.developerRole}>Full-Stack Developer · Backend Focused</p>
-            <p className={styles.text}>
-              I'm a Java Developer passionate about building
-              scalable & Impactful Web applications. ScoutIQ was built entirely
-              by me — from database schema design and REST API architecture
-              to frontend UI and cloud deployment. This project reflects my
-              interest in both software engineering and football analytics.
-            </p>
+            <p className={styles.developerRole}>Software Engineer</p>
           </div>
 
           <div className={styles.socialLinks}>
