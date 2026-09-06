@@ -11,8 +11,7 @@ const leagueData = [
     name: "Premier League",
     short: "PL",
     country: "England",
-    champion: "Liverpool",
-    rank: "#1",
+    champion: "Arsenal",
     logo: `./assets/leagues/PL.jpg`,
     color: "linear-gradient(135deg, #3d195b, #7c3aed)",
     bgColor: "rgba(124, 58, 237, 0.15)",
@@ -23,7 +22,6 @@ const leagueData = [
     short: "LL",
     country: "Spain",
     champion: "FC Barcelona",
-    rank: "#2",
     logo: "./assets/leagues/LaLiga.jpg",
     color: "linear-gradient(135deg, #ff5a36, #ea580c)",
     bgColor: "rgba(255, 90, 54, 0.15)",
@@ -34,7 +32,6 @@ const leagueData = [
     short: "BL",
     country: "Germany",
     champion: "Bayern Munich",
-    rank: "#3",
     logo: "./assets/leagues/Bundesliga.jpg",
     color: "linear-gradient(135deg, #ef233c, #dc2626)",
     bgColor: "rgba(239, 35, 60, 0.15)",
@@ -45,7 +42,6 @@ const leagueData = [
     short: "L1",
     country: "France",
     champion: "PSG",
-    rank: "#4",
     logo: "./assets/leagues/Ligue_1.jpg",
     color: "linear-gradient(135deg, #1d4ed8, #06b6d4)",
     bgColor: "rgba(0, 194, 255, 0.15)",
@@ -55,7 +51,7 @@ const leagueData = [
     name: "Serie A",
     short: "SA",
     country: "Italy",
-    champion: "Napoli",
+    champion: "Inter Milan",
     rank: "#5",
     logo: "./assets/leagues/Serie_A.jpg",
     color: "linear-gradient(135deg, #1e3a5f, #0ea5e9)",
@@ -109,7 +105,6 @@ const leagues = (name) => {
                         </div>
                         <div className={styles.stat}>
                           <span className={styles.statLabel}>Ranking</span>
-                          <span className={styles.statValue}>{league.rank}</span>
                         </div>
                       </div>
     

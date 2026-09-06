@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from "./LeagueData.module.css";
-import { useParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import {useParams, useLocation, useNavigate } from "react-router-dom";
 import Table from './Components/Table';
 import LeaguePlayers from './Components/LeaguePlayers';
 import { Fixture } from './Components/Fixture';
@@ -16,36 +17,36 @@ const LeagueData = () => {
   switch (name) {
     case "Premier League":
       var country = "England";
-      var start = "2025/08/15";
-      var end = "2026/05/24";
+      var start = "2026/08/21";
+      var end = "2027/05/30";
       var img = "/public/assets/leagues/PL.jpg";
       var countryFlag = "GB";
       break;
     case "La Liga":
       var country = "Spain";
-      var start = "2025/08/16";
-      var end = "2026/05/24";
+      var start = "2026/08/15";
+      var end = "2027/05/30";
       var img = "/public/assets/leagues/LaLiga.jpg";
       var countryFlag = "ES";
       break;
     case "Bundesliga":
       var country = "Germany";
-      var start = "2025/08/22";
-      var end = "2026/05/16";
+      var start = "2026/08/28";
+      var end = "2027/05/22";
       var img = "/public/assets/leagues/Bundesliga.jpg";
       var countryFlag = "DE";
       break;
     case "Serie A":
       var country = "Italy";
-      var start = "2025/08/15";
-      var end = "2026/05/24";
+      var start = "2026/08/22";
+      var end = "2027/05/30";
       var img = "/public/assets/leagues/Serie_A.jpg";
       var countryFlag = "IT";
       break;
     case "Ligue 1":
       var country = "France"; 
-      var start = "2025/08/23";
-      var end = "2026/05/24";
+      var start = "2026/08/21"; 
+      var end = "2027/05/30";
       var img = "/public/assets/leagues/Ligue_1.jpg";
       var countryFlag = "FR";
       break;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from "./Compare.module.css";
 import { useParams } from 'react-router-dom';
 import PlayerProfile from './Components/PlayerProfile';
@@ -14,20 +14,38 @@ const Compare = () => {
   const [player2, setPlayer2] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [player2Error, setPlayer2Error] = useState(null);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const searchWrapperRef = useRef(null);
 
-
-  // Fetch Player 1 on mount
+  // Fetch Player 1 on mount / when id changes
   useEffect(() => {
+    if (!id) {
+      // No id in the route — nothing to fetch, don't hang on "Loading..." forever
+      setLoading(false);
+      setError("No player selected");
+      return;
+    }
+
+    // Reset comparison state whenever the primary player changes
+    setPlayer2(null);
+    setPlayer2Error(null);
+    setQuery('');
+    setResults([]);
+
+    let cancelled = false;
+
     const fetchPlayer1 = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        let API = import.meta.env.VITE_API_BASE_URL;
-
+        const API = import.meta.env.VITE_API_BASE_URL;
         const res = await fetch(`${API}/api/scouting/players/${id}`);
+
+        if (cancelled) return;
 
         if (res.ok) {
           const data = await res.json();
@@ -36,18 +54,21 @@ const Compare = () => {
           setError(`Failed to fetch player data (${res.status})`);
         }
       } catch (err) {
-        console.error("Network error:", err);
-        setError("Network error");
+        if (!cancelled) {
+          console.error("Network error:", err);
+          setError("Network error");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
-    if (id) {
-      fetchPlayer1();
-    }
-  }, [id]);
+    fetchPlayer1();
 
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
   // Debounced search
   useEffect(() => {
@@ -57,23 +78,45 @@ const Compare = () => {
     }
 
     const API = import.meta.env.VITE_API_BASE_URL;
+    let cancelled = false;
 
     const timer = setTimeout(async () => {
-      const res = await fetch(
-        `${API}/api/scouting/names?query=${encodeURIComponent(query)}`
-      );
-      const data = await res.json();
-      setResults(data);
+      try {
+        const res = await fetch(
+          `${API}/api/scouting/names?query=${encodeURIComponent(query)}`
+        );
+        if (cancelled) return;
+        if (res.ok) {
+          const data = await res.json();
+          setResults(data);
+          setDropdownOpen(true);
+        }
+      } catch (err) {
+        console.error("Search error:", err);
+      }
     }, 250);
 
-    return () => clearTimeout(timer);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [query]);
-  
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Fetch Player 2 when user selects
   const handleSelectPlayer2 = async (selectedId) => {
     try {
-      setError(null);
+      setPlayer2Error(null);
 
       const API = import.meta.env.VITE_API_BASE_URL;
       const res = await fetch(`${API}/api/scouting/players/${selectedId}`);
@@ -82,19 +125,17 @@ const Compare = () => {
         const data = await res.json();
         setPlayer2(data);
       } else {
-        setError(`Failed to fetch player 2 data (${res.status})`);
+        setPlayer2Error(`Failed to fetch player 2 data (${res.status})`);
       }
     } catch (err) {
       console.error("Network error:", err);
-      setError("Network error");
+      setPlayer2Error("Network error");
     }
   };
 
-  
   const nameQuery = (e) => {
     setQuery(e.target.value);
   };
-
 
   // Placeholder stats when player2 is not selected
   const placeholderStats = [
@@ -126,130 +167,72 @@ const Compare = () => {
     { label: "Minutes", value: player2?.minutes ?? 'N/A' },
   ];
 
-   //Filtering Stats for PhaseStats component
-
-  // Attacking Stats - Player 1
-  const attackingStats1 = player1 ? {
-    goals: player1.goals ?? 0,
-    gA: player1.gA ?? 0,
-    goalsPer90: player1.goalsPer90 ?? 0,
-    xg: player1.xg ?? 0,
-    xag: player1.xag ?? 0,
-    npxg: player1.npxg ?? 0,
-    shots: player1.shots ?? 0,
-    shotsOnTarget: player1.shotsOnTarget ?? 0,
-    sotPercentage: player1.sotPercentage ?? 0,
-    shotsPer90: player1.shotsPer90 ?? 0,
-    sotPer90: player1.sotPer90 ?? 0,
+  const buildAttackingStats = (p) => p ? {
+    goals: p.goals ?? 0,
+    gA: p.gA ?? 0,
+    goalsPer90: p.goalsPer90 ?? 0,
+    xg: p.xg ?? 0,
+    xag: p.xag ?? 0,
+    npxg: p.npxg ?? 0,
+    shots: p.shots ?? 0,
+    shotsOnTarget: p.shotsOnTarget ?? 0,
+    sotPercentage: p.sotPercentage ?? 0,
+    shotsPer90: p.shotsPer90 ?? 0,
+    sotPer90: p.sotPer90 ?? 0,
   } : null;
 
-  // Passing Stats - Player 1
-  const passingStats1 = player1 ? {
-    assists: player1.assists ?? 0,
-    assistsPer90: player1.assistsPer90 ?? 0,
-    passesAttempted: player1.passesAttempted ?? 0,
-    completedPasses: player1.completedPasses ?? 0,
-    passComplPerce: player1.passComplPerce ?? 0,
-    keyPasses: player1.keyPasses ?? 0,
-    progressivePasses: player1.progressivePasses ?? 0,
-    sca: player1.sca ?? 0,
-    sca90: player1.sca90 ?? 0,
-    gca: player1.gca ?? 0,
-    gca90: player1.gca90 ?? 0,
+  const buildPassingStats = (p) => p ? {
+    assists: p.assists ?? 0,
+    assistsPer90: p.assistsPer90 ?? 0,
+    passesAttempted: p.passesAttempted ?? 0,
+    completedPasses: p.completedPasses ?? 0,
+    passComplPerce: p.passComplPerce ?? 0,
+    keyPasses: p.keyPasses ?? 0,
+    progressivePasses: p.progressivePasses ?? 0,
+    sca: p.sca ?? 0,
+    sca90: p.sca90 ?? 0,
+    gca: p.gca ?? 0,
+    gca90: p.gca90 ?? 0,
   } : null;
 
-  // Possession Stats - Player 1
-  const possessionStats1 = player1 ? {
-    touches: player1.touches ?? 0,
-    defThirdTouches: player1.defThirdTouches ?? 0,
-    midThirdTouches: player1.midThirdTouches ?? 0,
-    attThirdTouches: player1.attThirdTouches ?? 0,
-    carries: player1.carries ?? 0,
-    progressiveCarries: player1.progressiveCarries ?? 0,
-    progressiveRuns: player1.progressiveRuns ?? 0,
-    carryDistance: player1.carryDistance ?? 0,
-    progCarryDistance: player1.progCarryDistance ?? 0,
-    progCarriesPerce: player1.progCarriesPerce ?? 0,
-    dribbles: player1.dribbles ?? 0,
-    dribblesCompleted: player1.dribblesCompleted ?? 0,
+  const buildPossessionStats = (p) => p ? {
+    touches: p.touches ?? 0,
+    defThirdTouches: p.defThirdTouches ?? 0,
+    midThirdTouches: p.midThirdTouches ?? 0,
+    attThirdTouches: p.attThirdTouches ?? 0,
+    carries: p.carries ?? 0,
+    progressiveCarries: p.progressiveCarries ?? 0,
+    progressiveRuns: p.progressiveRuns ?? 0,
+    carryDistance: p.carryDistance ?? 0,
+    progCarryDistance: p.progCarryDistance ?? 0,
+    progCarriesPerce: p.progCarriesPerce ?? 0,
+    dribbles: p.dribbles ?? 0,
+    dribblesCompleted: p.dribblesCompleted ?? 0,
   } : null;
 
-  // Defensive Stats - Player 1
-  const defensiveStats1 = player1 ? {
-    tackles: player1.tackles ?? 0,
-    tklWon: player1.tklWon ?? 0,
-    tklPerce: player1.tklPerce ?? 0,
-    interceptions: player1.interceptions ?? 0,
-    blocks: player1.blocks ?? 0,
-    clr: player1.clr ?? 0,
-    aerialsWon: player1.aerialsWon ?? 0,
+  const buildDefensiveStats = (p) => p ? {
+    tackles: p.tackles ?? 0,
+    tklWon: p.tklWon ?? 0,
+    tklPerce: p.tklPerce ?? 0,
+    interceptions: p.interceptions ?? 0,
+    blocks: p.blocks ?? 0,
+    clr: p.clr ?? 0,
+    aerialsWon: p.aerialsWon ?? 0,
   } : null;
 
-  // Attacking Stats - Player 2
-  const attackingStats2 = player2 ? {
-    goals: player2.goals ?? 0,
-    gA: player2.gA ?? 0,
-    goalsPer90: player2.goalsPer90 ?? 0,
-    xg: player2.xg ?? 0,
-    xag: player2.xag ?? 0,
-    npxg: player2.npxg ?? 0,
-    shots: player2.shots ?? 0,
-    shotsOnTarget: player2.shotsOnTarget ?? 0,
-    sotPercentage: player2.sotPercentage ?? 0,
-    shotsPer90: player2.shotsPer90 ?? 0,
-    sotPer90: player2.sotPer90 ?? 0,
-    sca: player2.sca ?? 0,
-    sca90: player2.sca90 ?? 0,
-    gca: player2.gca ?? 0,
-    gca90: player2.gca90 ?? 0,
-  } : null;
+  const attackingStats1 = buildAttackingStats(player1);
+  const passingStats1 = buildPassingStats(player1);
+  const possessionStats1 = buildPossessionStats(player1);
+  const defensiveStats1 = buildDefensiveStats(player1);
 
-  // Passing Stats - Player 2
-  const passingStats2 = player2 ? {
-    assists: player2.assists ?? 0,
-    assistsPer90: player2.assistsPer90 ?? 0,
-    passesAttempted: player2.passesAttempted ?? 0,
-    completedPasses: player2.completedPasses ?? 0,
-    passComplPerce: player2.passComplPerce ?? 0,
-    keyPasses: player2.keyPasses ?? 0,
-    progressivePasses: player2.progressivePasses ?? 0,
-    sca: player2.sca ?? 0,
-    sca90: player2.sca90 ?? 0,
-    gca: player2.gca ?? 0,
-    gca90: player2.gca90 ?? 0,
-  } : null;
-
-  // Possession Stats - Player 2
-  const possessionStats2 = player2 ? {
-    touches: player2.touches ?? 0,
-    defThirdTouches: player2.defThirdTouches ?? 0,
-    midThirdTouches: player2.midThirdTouches ?? 0,
-    attThirdTouches: player2.attThirdTouches ?? 0,
-    carries: player2.carries ?? 0,
-    progressiveCarries: player2.progressiveCarries ?? 0,
-    progressiveRuns: player2.progressiveRuns ?? 0,
-    carryDistance: player2.carryDistance ?? 0,
-    progCarryDistance: player2.progCarryDistance ?? 0,
-    progCarriesPerce: player2.progCarriesPerce ?? 0,
-    dribbles: player2.dribbles ?? 0,
-    dribblesCompleted: player2.dribblesCompleted ?? 0,
-  } : null;
-
-  // Defensive Stats - Player 2
-  const defensiveStats2 = player2 ? {
-    tackles: player2.tackles ?? 0,
-    tklWon: player2.tklWon ?? 0,
-    tklPerce: player2.tklPerce ?? 0,
-    interceptions: player2.interceptions ?? 0,
-    blocks: player2.blocks ?? 0,
-    clr: player2.clr ?? 0,
-    aerialsWon: player2.aerialsWon ?? 0,
-  } : null;
-
-
+  const attackingStats2 = buildAttackingStats(player2);
+  const passingStats2 = buildPassingStats(player2);
+  const possessionStats2 = buildPossessionStats(player2);
+  const defensiveStats2 = buildDefensiveStats(player2);
 
   if (loading) return <div className={styles.loading}><h2>Loading...</h2></div>;
   if (error) return <div className={styles.error}>{error}</div>;
+  if (!player1) return <div className={styles.error}>Player not found</div>;
 
   return (
     <div className={styles.container}>
@@ -257,17 +240,18 @@ const Compare = () => {
       <div className={styles.headerBar}>
         <h1 className={styles.sectionTitle}>Compare Players</h1>
 
-        <div className={styles.searchInput}>
+        <div className={styles.searchInput} ref={searchWrapperRef}>
           <input
             type="text"
             className={styles.nameInput}
             onChange={nameQuery}
+            onFocus={() => results.length > 0 && setDropdownOpen(true)}
             value={query}
             placeholder="Search player..."
           />
 
           {/* Results Dropdown */}
-          {query.trim().length >= 2 && results.length > 0 && (
+          {dropdownOpen && query.trim().length >= 2 && results.length > 0 && (
             <ul className={styles.dropdown}>
               {results.map((player) => (
                 <li
@@ -276,12 +260,17 @@ const Compare = () => {
                     handleSelectPlayer2(player.id);
                     setQuery('');
                     setResults([]);
+                    setDropdownOpen(false);
                   }}
                 >
                   {player.name}  ·  {player.clubName}
                 </li>
               ))}
             </ul>
+          )}
+
+          {player2Error && (
+            <div className={styles.searchError}>{player2Error}</div>
           )}
         </div>
 
@@ -290,7 +279,7 @@ const Compare = () => {
       <div className={styles.compareGrid}>
 
         <div className={styles.profileCard}>
-          {player1 && <PlayerProfile data={player1} />}
+          <PlayerProfile data={player1} />
         </div>
 
         <div className={styles.vsDivider}>
@@ -302,8 +291,6 @@ const Compare = () => {
             <PlayerProfile data={player2} />
           ) : (
             <div className={styles.placeholder}>
-
-
               {/* Placeholder Stats */}
               <div className={styles.playerProfile}>
                 <h2 className={styles.title}>Player Info</h2>
@@ -326,7 +313,7 @@ const Compare = () => {
         </div>
 
       </div>
-      
+
       <div className={styles.RadarWrapper}>
         {player2 ? (
           <>
@@ -352,41 +339,41 @@ const Compare = () => {
       </div>
 
       <div className={styles.compareGrid}>
-          <div className={styles.quickStatsPanel}>
-            <h3 className={styles.panelTitle}>
-              {player1.name ? player1.name : "N/A"}
-            </h3>
-            <div className={styles.statsGrid}>
-              {statsCards1.map((stat, i) => (
-                <div key={i} className={styles.statCard}>
-                  <span className={styles.statCardValue}>{stat.value}</span>
-                  <span className={styles.statCardLabel}>{stat.label}</span>
-                </div>
-              ))}
-            </div>
+        <div className={styles.quickStatsPanel}>
+          <h3 className={styles.panelTitle}>
+            {player1?.name ?? "N/A"}
+          </h3>
+          <div className={styles.statsGrid}>
+            {statsCards1.map((stat, i) => (
+              <div key={i} className={styles.statCard}>
+                <span className={styles.statCardValue}>{stat.value}</span>
+                <span className={styles.statCardLabel}>{stat.label}</span>
+              </div>
+            ))}
           </div>
+        </div>
 
         <div className={styles.vsDivider}>
           <span>VS</span>
         </div>
 
-          <div className={styles.quickStatsPanel}>
-            <h3 className={styles.panelTitle}>
-              {player2 ? player2.name : "N/A"}
-            </h3>
-            <div className={styles.statsGrid}>
-              {statsCards2.map((stat, i) => (
-                <div key={i} className={styles.statCard}>
-                  <span className={styles.statCardValue}>{stat.value}</span>
-                  <span className={styles.statCardLabel}>{stat.label}</span>
-                </div>
-              ))}
-            </div>
+        <div className={styles.quickStatsPanel}>
+          <h3 className={styles.panelTitle}>
+            {player2?.name ?? "N/A"}
+          </h3>
+          <div className={styles.statsGrid}>
+            {statsCards2.map((stat, i) => (
+              <div key={i} className={styles.statCard}>
+                <span className={styles.statCardValue}>{stat.value}</span>
+                <span className={styles.statCardLabel}>{stat.label}</span>
+              </div>
+            ))}
           </div>
+        </div>
       </div>
 
       <div className={styles.compareGrid}>
-        {player1 ? (
+        {player1?.id ? (
           <AttributeRating id={player1.id} />
         ) : (
           <div className={styles.NaN}>
@@ -398,26 +385,25 @@ const Compare = () => {
           <span>VS</span>
         </div>
 
-        {player2 ? (
+        {player2?.id ? (
           <AttributeRating id={player2.id} />
         ) : (
           <div className={styles.NaN}>
             <h2 className={styles.placeholderText}>N/A</h2>
           </div>
         )}
-
       </div>
-      
+
       {/* Attack */}
       <div className={styles.compareGrid}>
-        <PhaseStats title={"Attacking"} data={attackingStats1}/>
+        <PhaseStats title={"Attacking"} data={attackingStats1} />
 
         <div className={styles.vsDivider}>
           <span>VS</span>
         </div>
 
         {player2 ? (
-          <PhaseStats title={"Attacking"} data={attackingStats2}/>
+          <PhaseStats title={"Attacking"} data={attackingStats2} />
         ) : (
           <div className={styles.NaN}>
             <h2 className={styles.placeholderText}>N/A</h2>
@@ -427,14 +413,14 @@ const Compare = () => {
 
       {/* Passing */}
       <div className={styles.compareGrid}>
-        <PhaseStats title={"Passing"} data={passingStats1}/>
+        <PhaseStats title={"Passing"} data={passingStats1} />
 
         <div className={styles.vsDivider}>
           <span>VS</span>
         </div>
 
         {player2 ? (
-          <PhaseStats title={"Passing"} data={passingStats2}/>
+          <PhaseStats title={"Passing"} data={passingStats2} />
         ) : (
           <div className={styles.NaN}>
             <h2 className={styles.placeholderText}>N/A</h2>
@@ -444,14 +430,14 @@ const Compare = () => {
 
       {/* Possession & Carries */}
       <div className={styles.compareGrid}>
-        <PhaseStats title={"Possession & Carries"} data={possessionStats1}/>
+        <PhaseStats title={"Possession & Carries"} data={possessionStats1} />
 
         <div className={styles.vsDivider}>
           <span>VS</span>
         </div>
 
         {player2 ? (
-          <PhaseStats title={"Possession & Carries"} data={possessionStats2}/>
+          <PhaseStats title={"Possession & Carries"} data={possessionStats2} />
         ) : (
           <div className={styles.NaN}>
             <h2 className={styles.placeholderText}>N/A</h2>
@@ -461,14 +447,14 @@ const Compare = () => {
 
       {/* Defensive */}
       <div className={styles.compareGrid}>
-        <PhaseStats title={"Defensive"} data={defensiveStats1}/>
+        <PhaseStats title={"Defensive"} data={defensiveStats1} />
 
         <div className={styles.vsDivider}>
           <span>VS</span>
         </div>
 
         {player2 ? (
-          <PhaseStats title={"Defensive"} data={defensiveStats2}/>
+          <PhaseStats title={"Defensive"} data={defensiveStats2} />
         ) : (
           <div className={styles.NaN}>
             <h2 className={styles.placeholderText}>N/A</h2>
@@ -479,7 +465,7 @@ const Compare = () => {
       <p className={styles.dataNote}>
         <FaInfoCircle className={styles.noteIcon} />
         <span>
-           Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
+          Data based on 2024–25 season performance. Player ability may vary beyond these metrics.
         </span>
       </p>
 
